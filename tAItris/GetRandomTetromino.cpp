@@ -2,13 +2,13 @@
 
 eTetromino GetRandomTetromino(void)
 {
-	//³­¼ö °ü·Ã ¼³Á¤
+	//Â³Â­Â¼Ã¶ Â°Ã¼Â·Ãƒ Â¼Â³ÃÂ¤
 	std::random_device rd;
 	std::mt19937 gen(rd());
-	std::uniform_int_distribution<int> dis(0, 6);	//±ÕµîºĞÆ÷(Uniform Distribution)
+	std::uniform_int_distribution<int> dis(0, 6);	//Â±Ã•ÂµÃ®ÂºÃÃ†Ã·(Uniform Distribution)
 
 	int randNum = dis(gen);
-	assert(randNum >= 0 && randNum <= 6);
+	assert(randNum >= 0 && randNum <= 6); //randNumì˜ ë²”ìœ„ Assert
 	if (randNum == 0) {
 		return eTetromino::I;
 	}
