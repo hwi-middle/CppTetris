@@ -143,8 +143,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GetArrowKey.cpp" />
+    <ClCompile Include="GetRandomTetromino.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="title.cpp" />
+    <ClCompile Include="ShowHelp.cpp" />
+    <ClCompile Include="ShowTitle.cpp" />
+    <ClCompile Include="StartGame.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

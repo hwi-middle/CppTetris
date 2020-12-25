@@ -1,6 +1,6 @@
 #include "myheader.h"
 
-eInputKey GetArrowKey(void)
+eInputKey GetInputKey(void)
 {
 	while (true)
 	{
@@ -26,6 +26,18 @@ eInputKey GetArrowKey(void)
 			else if (input == '\r')
 			{
 				return eInputKey::ENTER;
+			}
+			else if (input == 'z' || input == 'Z')
+			{
+				return eInputKey::Z;
+			}
+			else if (input == 'x' || input == 'X')
+			{
+				return eInputKey::X;
+			}
+			else if (input == 'c' || input == 'C')
+			{
+				return eInputKey::C;
 			}
 			else
 			{
