@@ -2,10 +2,10 @@
 
 eTetromino GetRandomTetromino(void)
 {
-	//³­¼ö °ü·Ã ¼³Á¤
+	//난수 관련 설정
 	std::random_device rd;
 	std::mt19937 gen(rd());
-	std::uniform_int_distribution<int> dis(0, 6);	//±ÕµîºÐÆ÷(Uniform Distribution)
+	std::uniform_int_distribution<int> dis(0, 6);	//균등분포(Uniform Distribution)
 
 	int randNum = dis(gen);
 	assert(randNum >= 0 && randNum <= 6); //randNum의 범위 Assert
