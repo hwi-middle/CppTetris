@@ -25,9 +25,9 @@ eTetromino GetRandomTetromino(void)
 		return eTetromino::S;
 	}
 	else if (randNum == 5) {
-		return eTetromino::T;
+		return eTetromino::Z;
 	}
 	else {
-		return eTetromino::Z;
+		return eTetromino::T;
 	}
 }

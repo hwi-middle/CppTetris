@@ -2,6 +2,7 @@
 
 eTitleActions ShowTitle(void)
 {
+	system("cls");
 	std::vector<std::string> menu{
 		"> 게임 시작",
 		"  도움말",

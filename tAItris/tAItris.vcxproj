@@ -145,9 +145,11 @@
     <ClCompile Include="GetArrowKey.cpp" />
     <ClCompile Include="GetRandomTetromino.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="RotateTetromino.cpp" />
     <ClCompile Include="ShowHelp.cpp" />
     <ClCompile Include="ShowTitle.cpp" />
     <ClCompile Include="StartGame.cpp" />
+    <ClCompile Include="SwapHold.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

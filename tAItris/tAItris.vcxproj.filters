@@ -38,5 +38,11 @@
     <ClCompile Include="GetRandomTetromino.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="SwapHold.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="RotateTetromino.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
