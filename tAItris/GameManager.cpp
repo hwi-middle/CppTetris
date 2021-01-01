@@ -8,9 +8,9 @@ void GameManager::StartGame(void)
 	const int PLAY_AREA_HEIGHT = 24;
 	const int PLAY_AREA_WIDTH = 10;
 	int playArea[PLAY_AREA_HEIGHT][PLAY_AREA_WIDTH];	//블럭들이 배치되는 공간. 0행~3행은 내려오는 구간, 화면에 표시되지 않으며 이 곳에 블럭 최종 배치시 게임오버
-							//0: 블럭 없음
-							//1: 굳은 블럭
-							//2: 놓고 있는 블럭
+														//0: 블럭 없음
+														//1: 굳은 블럭
+														//2: 놓고 있는 블럭
 	for (int i = 0; i < PLAY_AREA_HEIGHT; i++)
 	{
 		memset(playArea[i], 0, sizeof(playArea[i]));
@@ -18,16 +18,27 @@ void GameManager::StartGame(void)
 
 	//eTetromino holdSlot;
 	std::vector<eTetromino> nextSlot(3);
+
+#ifdef _DEBUG
+	std::cout << "테트로미노 선택\n";
+	std::cout << "1.I\n2.J\n3.L\n4.O\n5.S\n6.Z\n7.T\n";
+	int sel;
+	std::cin >> sel;
+	Tetromino currentTetromino((eTetromino)--sel);
+	system("cls");
+#else
 	Tetromino currentTetromino(GetRandomTetromino());
 	for (int i = 0; i < nextSlot.size(); i++)
 	{
 		nextSlot[i] = GetRandomTetromino();
 	}
+#endif // _DEBUG
 
-	bool gameOver = false;
-	while (gameOver != true)
+	bool bGameOver = false;
+	while (bGameOver != true)
 	{
 		{
+			system("cls");
 			int x = 0;
 			int y = 0;
 			for (int i = currentTetromino.GetCoordinateX(); i < currentTetromino.GetCoordinateX() + 4; i++)
@@ -69,7 +80,7 @@ void GameManager::StartGame(void)
 			}
 			std::cout << "\n";
 		}
-		eInputKey key = GetInputKey();
+
 		{
 			int x = 0;
 			int y = 0;
@@ -84,6 +95,8 @@ void GameManager::StartGame(void)
 				x++;
 			}
 		}
+
+		eInputKey key = GetInputKey();
 		switch (key)
 		{
 		case eInputKey::ARROW_LEFT:
@@ -92,9 +105,11 @@ void GameManager::StartGame(void)
 		case eInputKey::ARROW_RIGHT:
 			currentTetromino.SetCoordinate(currentTetromino.GetCoordinateX(), currentTetromino.GetCoordinateY() + 1);
 			break;
-		case eInputKey::ARROW_UP:	//디버깅용
+#ifdef _DEBUG
+		case eInputKey::ARROW_UP:
 			currentTetromino.SetCoordinate(currentTetromino.GetCoordinateX() - 1, currentTetromino.GetCoordinateY());
 			break;
+#endif // _DEBUG
 		case eInputKey::ARROW_DOWN:
 			currentTetromino.SetCoordinate(currentTetromino.GetCoordinateX() + 1, currentTetromino.GetCoordinateY());
 			break;
@@ -105,17 +120,10 @@ void GameManager::StartGame(void)
 			currentTetromino.Rotate(eRotate::COUNTERCLOCKWISE);
 			break;
 		case eInputKey::C:
-			//currentTetrominoData = holdSlot;
-			break;
-		case eInputKey::SPACE:
-			break;
-		case eInputKey::ENTER:
-		case eInputKey::INVALID:
 			break;
 		default:
 			break;
 		}
-		system("cls");
 	}
 }
 
@@ -232,6 +240,9 @@ eInputKey GameManager::GetInputKey(void)
 					return eInputKey::ARROW_LEFT;
 				case 77:
 					return eInputKey::ARROW_RIGHT;
+				default:
+					assert(false);
+					break;
 				}
 			}
 			else if (input == '\r')

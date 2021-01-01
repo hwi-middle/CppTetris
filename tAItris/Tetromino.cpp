@@ -4,7 +4,7 @@
 #define X first;
 #define Y second;
 
-Tetromino::Tetromino(eTetromino t) :type(t), currentRotateLevel(0)
+Tetromino::Tetromino(const eTetromino t) :type(t), currentRotateLevel(0)
 {
 	for (int i = 0; i < 4; i++)
 	{
@@ -13,7 +13,9 @@ Tetromino::Tetromino(eTetromino t) :type(t), currentRotateLevel(0)
 			shape[i][j] = tetrominoes[(int)type][0][i][j];
 		}
 	}
-}int Tetromino::tetrominoes[7][4][4][4] =
+}
+
+const int Tetromino::tetrominoes[7][4][4][4] =
 {
 	//I¹Ì³ë
 	{
@@ -206,19 +208,19 @@ Tetromino::Tetromino(eTetromino t) :type(t), currentRotateLevel(0)
 	},
 };
 
-eTetromino Tetromino::GetType()
+eTetromino Tetromino::GetType() const
 {
 	return type;
 }
 
-int Tetromino::GetShape(int r, int c)
+int Tetromino::GetShape(const int r, const int c)
 {
 	assert(r >= 0 && r <= 3);
 	assert(c >= 0 && c <= 3);
 	return shape[r][c];
 }
 
-void Tetromino::Rotate(eRotate rot)
+void Tetromino::Rotate(const eRotate rot)
 {
 	switch (rot)
 	{
@@ -242,17 +244,50 @@ void Tetromino::Rotate(eRotate rot)
 			shape[i][j] = tetrominoes[(int)type][currentRotateLevel][i][j];
 		}
 	}
+	int x = coordinate.X;
+	int y = coordinate.Y;
+	SetCoordinate(x, y);
 }
 
-int Tetromino::GetCoordinateX()
+int Tetromino::GetCoordinateX() const
 {
 	return coordinate.X;
 }
-int Tetromino::GetCoordinateY()
+
+int Tetromino::GetCoordinateY() const
 {
 	return coordinate.Y;
 }
 void Tetromino::SetCoordinate(int r, int c)
 {
+	int minCol = -3;
+	int maxCol = 7;
+
+	int minIdx = 4;
+	for (int i = 0; i < 4; i++)
+	{
+		for (int j = 0; j < 3; j++)
+		{
+			if (shape[i][j] != 0)
+			{
+				minIdx = std::min(minIdx, j);
+			}
+		}
+	}
+	if (minIdx != 4) minCol += 3 - minIdx;
+
+	for (int i = 0; i < 4; i++)
+	{
+		if (shape[i][3] != 0)
+		{
+			maxCol = 6;
+		}
+	}
+
+	int minRow;
+	int maxRow;
+
+	if (c > maxCol) c = maxCol;
+	else if (c < minCol) c = minCol;
 	coordinate = { r,c };
 }
