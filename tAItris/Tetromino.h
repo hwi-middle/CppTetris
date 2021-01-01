@@ -11,8 +11,7 @@ private:
 	int currentRotateLevel;
 public:
 	Tetromino(eTetromino t);
-	eTetromino GetTetrominoType();
-	void GetTetrominoShape();
+	eTetromino GetType();
+	int GetShape(int r, int c);
 	void Rotate(eRotate rot);
-	//void operator[](int n);
 };

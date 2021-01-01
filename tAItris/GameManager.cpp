@@ -4,112 +4,98 @@
 
 void GameManager::StartGame(void)
 {
-	//system("cls");
-	//int playArea[24][10];	//블럭들이 배치되는 공간. 0행~3행은 내려오는 구간, 화면에 표시되지 않으며 이 곳에 블럭 최종 배치시 게임오버
-	//						//0: 블럭 없음
-	//						//1: 굳은 블럭
-	//						//2: 놓고 있는 블럭
-	//for (int i = 0; i < 24; i++)
-	//{
-	//	memset(playArea[i], 0, sizeof(playArea[i]));
-	//}
+	system("cls");
+	int playArea[24][10];	//블럭들이 배치되는 공간. 0행~3행은 내려오는 구간, 화면에 표시되지 않으며 이 곳에 블럭 최종 배치시 게임오버
+							//0: 블럭 없음
+							//1: 굳은 블럭
+							//2: 놓고 있는 블럭
+	for (int i = 0; i < 24; i++)
+	{
+		memset(playArea[i], 0, sizeof(playArea[i]));
+	}
 
-	//eTetromino holdSlot;	//Hold 해둔 테트로미노
-	//std::vector<eTetromino> nextSlot(3);	//Next 테트로미노의 목록
-	//Tetromino t1(eTetromino::J);
-	//for (int i = 0; i < nextSlot.size(); i++)
-	//{
-	//	nextSlot[i] = GetRandomTetromino();
-	//}
+	eTetromino holdSlot;	//Hold 해둔 테트로미노
+	std::vector<eTetromino> nextSlot(3);	//Next 테트로미노의 목록
+	Tetromino currentTetromino(GetRandomTetromino());
+	for (int i = 0; i < nextSlot.size(); i++)
+	{
+		nextSlot[i] = GetRandomTetromino();
+	}
 
-
-	//int targetBlock = -1;
-
-	//for (int i = 4; i < 8; i++)
-	//{
-	//	for (int j = 0; j < 4; j++)
-	//	{
-	//		playArea[i][j] |= currentTetrominoShape[i - 4][j];
-	//	}
-	//}
-
-	//bool gameOver = false;
-	//while (gameOver != true)
-	//{
-	//	for (int i = 4; i < 24; i++)
-	//	{
-	//		for (int j = 0; j < 10; j++)
-	//		{
-	//			std::cout << ". ";
-	//		}
-	//		for (int j = 0; j < 9; j++)
-	//		{
-	//			if (playArea[i][j] == 1)
-	//			{
-	//				std::cout << "■";
-	//			}
-	//			else if (playArea[i][j] == 2)
-	//			{
-	//				std::cout << "□";
-	//			}
-	//			else
-	//			{
-	//				std::cout << "  ";
-	//			}
-	//		}
-	//		for (int j = 0; j < 10; j++)
-	//		{
-	//			std::cout << ". ";
-	//		}
-	//		std::cout << "\n";
-	//	}
-	//	eInputKey key = GetInputKey();
-	//	switch (key)
-	//	{
-	//	case eInputKey::ARROW_LEFT:
-	//		break;
-	//	case eInputKey::ARROW_RIGHT:
-	//		break;
-	//	case eInputKey::ARROW_UP:
-	//		break;
-	//	case eInputKey::ARROW_DOWN:
-	//		break;
-	//	case eInputKey::ENTER:
-	//		break;
-	//	case eInputKey::Z:
-	//		if (currentRotateLevel == 0) currentRotateLevel = 3;
-	//		else currentRotateLevel--;
-	//		for (int i = 0; i < 4; i++)
-	//		{
-	//			for (int j = 0; j < 4; j++)
-	//			{
-	//				currentTetrominoShape[i][j] = tetrominoes[(int)currentTetrominoData][currentRotateLevel][i][j];
-	//			}
-	//		}
-	//		break;
-	//	case eInputKey::X:
-	//		if (currentRotateLevel == 3) currentRotateLevel = 0;
-	//		else currentRotateLevel++;
-	//		for (int i = 0; i < 4; i++)
-	//		{
-	//			for (int j = 0; j < 4; j++)
-	//			{
-	//				currentTetrominoShape[i][j] = tetrominoes[(int)currentTetrominoData][currentRotateLevel][i][j];
-	//			}
-	//		}
-	//		break;
-	//	case eInputKey::C:
-	//		//currentTetrominoData = holdSlot;
-	//		break;
-	//	case eInputKey::SPACE:
-	//		break;
-	//	case eInputKey::INVALID:
-	//		break;
-	//	default:
-	//		break;
-	//	}
-	//	system("cls");
-	//}
+	bool gameOver = false;
+	while (gameOver != true)
+	{
+		for (int i = 4; i < 8; i++)
+		{
+			for (int j = 0; j < 4; j++)
+			{
+				playArea[i][j] |= currentTetromino.GetShape(i - 4, j);
+			}
+		}
+		for (int i = 4; i < 24; i++)
+		{
+			for (int j = 0; j < 10; j++)
+			{
+				std::cout << ". ";
+			}
+			for (int j = 0; j < 9; j++)
+			{
+				if (playArea[i][j] == 1)
+				{
+					std::cout << "■";
+				}
+				else if (playArea[i][j] == 2)
+				{
+					std::cout << "□";
+				}
+				else
+				{
+					std::cout << "  ";
+				}
+			}
+			for (int j = 0; j < 10; j++)
+			{
+				std::cout << ". ";
+			}
+			std::cout << "\n";
+		}
+		eInputKey key = GetInputKey();
+		for (int i = 4; i < 8; i++)
+		{
+			for (int j = 0; j < 4; j++)
+			{
+				playArea[i][j] ^= currentTetromino.GetShape(i - 4, j);
+			}
+		}
+		switch (key)
+		{
+		case eInputKey::ARROW_LEFT:
+			break;
+		case eInputKey::ARROW_RIGHT:
+			break;
+		case eInputKey::ARROW_UP:
+			break;
+		case eInputKey::ARROW_DOWN:
+			break;
+		case eInputKey::Z:
+			currentTetromino.Rotate(eRotate::CLOCKWISE);
+			break;
+		case eInputKey::X:
+			currentTetromino.Rotate(eRotate::COUNTERCLOCKWISE);
+			break;
+		case eInputKey::C:
+			//currentTetrominoData = holdSlot;
+			break;
+		case eInputKey::SPACE:
+			break;
+		case eInputKey::ENTER:
+		case eInputKey::INVALID:
+			break;
+		default:
+			break;
+		}
+		system("cls");
+	}
 }
 
 void GameManager::ShowHelp(void)

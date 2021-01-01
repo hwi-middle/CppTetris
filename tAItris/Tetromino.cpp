@@ -203,14 +203,16 @@ Tetromino::Tetromino(eTetromino t) :type(t), currentRotateLevel(0)
 	},
 };
 
-eTetromino Tetromino::GetTetrominoType()
+eTetromino Tetromino::GetType()
 {
 	return type;
 }
 
-void Tetromino::GetTetrominoShape()
+int Tetromino::GetShape(int r, int c)
 {
-
+	assert(r >= 0 && r <= 3);
+	assert(c >= 0 && c <= 3);
+	return shape[r][c];
 }
 
 void Tetromino::Rotate(eRotate rot)
@@ -238,3 +240,4 @@ void Tetromino::Rotate(eRotate rot)
 		}
 	}
 }
+
