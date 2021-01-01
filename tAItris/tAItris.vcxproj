@@ -139,17 +139,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="GameManager.h" />
     <ClInclude Include="myheader.h" />
+    <ClInclude Include="Tetromino.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="GetArrowKey.cpp" />
-    <ClCompile Include="GetRandomTetromino.cpp" />
-    <ClCompile Include="main.cpp" />
-    <ClCompile Include="RotateTetromino.cpp" />
-    <ClCompile Include="ShowHelp.cpp" />
-    <ClCompile Include="ShowTitle.cpp" />
-    <ClCompile Include="StartGame.cpp" />
-    <ClCompile Include="SwapHold.cpp" />
+    <ClCompile Include="GameManager.cpp" />
+    <ClCompile Include="TetrisMain.cpp" />
+    <ClCompile Include="Tetromino.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

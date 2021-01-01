@@ -18,30 +18,21 @@
     <ClInclude Include="myheader.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="Tetromino.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="GameManager.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp">
+    <ClCompile Include="Tetromino.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="GetArrowKey.cpp">
+    <ClCompile Include="GameManager.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="ShowTitle.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="ShowHelp.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="StartGame.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="GetRandomTetromino.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="SwapHold.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="RotateTetromino.cpp">
+    <ClCompile Include="TetrisMain.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
