@@ -1,6 +1,9 @@
 #include "myheader.h"
 #include "Tetromino.h"
 
+#define X first;
+#define Y second;
+
 Tetromino::Tetromino(eTetromino t) :type(t), currentRotateLevel(0)
 {
 	for (int i = 0; i < 4; i++)
@@ -241,3 +244,15 @@ void Tetromino::Rotate(eRotate rot)
 	}
 }
 
+int Tetromino::GetCoordinateX()
+{
+	return coordinate.X;
+}
+int Tetromino::GetCoordinateY()
+{
+	return coordinate.Y;
+}
+void Tetromino::SetCoordinate(int r, int c)
+{
+	coordinate = { r,c };
+}

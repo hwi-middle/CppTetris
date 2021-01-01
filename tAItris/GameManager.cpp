@@ -5,17 +5,19 @@
 void GameManager::StartGame(void)
 {
 	system("cls");
-	int playArea[24][10];	//블럭들이 배치되는 공간. 0행~3행은 내려오는 구간, 화면에 표시되지 않으며 이 곳에 블럭 최종 배치시 게임오버
+	const int PLAY_AREA_HEIGHT = 24;
+	const int PLAY_AREA_WIDTH = 10;
+	int playArea[PLAY_AREA_HEIGHT][PLAY_AREA_WIDTH];	//블럭들이 배치되는 공간. 0행~3행은 내려오는 구간, 화면에 표시되지 않으며 이 곳에 블럭 최종 배치시 게임오버
 							//0: 블럭 없음
 							//1: 굳은 블럭
 							//2: 놓고 있는 블럭
-	for (int i = 0; i < 24; i++)
+	for (int i = 0; i < PLAY_AREA_HEIGHT; i++)
 	{
 		memset(playArea[i], 0, sizeof(playArea[i]));
 	}
 
-	eTetromino holdSlot;	//Hold 해둔 테트로미노
-	std::vector<eTetromino> nextSlot(3);	//Next 테트로미노의 목록
+	//eTetromino holdSlot;
+	std::vector<eTetromino> nextSlot(3);
 	Tetromino currentTetromino(GetRandomTetromino());
 	for (int i = 0; i < nextSlot.size(); i++)
 	{
@@ -25,20 +27,28 @@ void GameManager::StartGame(void)
 	bool gameOver = false;
 	while (gameOver != true)
 	{
-		for (int i = 4; i < 8; i++)
 		{
-			for (int j = 0; j < 4; j++)
+			int x = 0;
+			int y = 0;
+			for (int i = currentTetromino.GetCoordinateX(); i < currentTetromino.GetCoordinateX() + 4; i++)
 			{
-				playArea[i][j] |= currentTetromino.GetShape(i - 4, j);
+				for (int j = currentTetromino.GetCoordinateY(); j < currentTetromino.GetCoordinateY() + 4; j++)
+				{
+					playArea[i][j] |= currentTetromino.GetShape(x, y);
+					y++;
+				}
+				y = 0;
+				x++;
 			}
 		}
-		for (int i = 4; i < 24; i++)
+
+		for (int i = 4; i < PLAY_AREA_HEIGHT; i++)
 		{
 			for (int j = 0; j < 10; j++)
 			{
 				std::cout << ". ";
 			}
-			for (int j = 0; j < 9; j++)
+			for (int j = 0; j < PLAY_AREA_WIDTH; j++)
 			{
 				if (playArea[i][j] == 1)
 				{
@@ -60,22 +70,33 @@ void GameManager::StartGame(void)
 			std::cout << "\n";
 		}
 		eInputKey key = GetInputKey();
-		for (int i = 4; i < 8; i++)
 		{
-			for (int j = 0; j < 4; j++)
+			int x = 0;
+			int y = 0;
+			for (int i = currentTetromino.GetCoordinateX(); i < currentTetromino.GetCoordinateX() + 4; i++)
 			{
-				playArea[i][j] ^= currentTetromino.GetShape(i - 4, j);
+				for (int j = currentTetromino.GetCoordinateY(); j < currentTetromino.GetCoordinateY() + 4; j++)
+				{
+					playArea[i][j] ^= currentTetromino.GetShape(x, y);
+					y++;
+				}
+				y = 0;
+				x++;
 			}
 		}
 		switch (key)
 		{
 		case eInputKey::ARROW_LEFT:
+			currentTetromino.SetCoordinate(currentTetromino.GetCoordinateX(), currentTetromino.GetCoordinateY() - 1);
 			break;
 		case eInputKey::ARROW_RIGHT:
+			currentTetromino.SetCoordinate(currentTetromino.GetCoordinateX(), currentTetromino.GetCoordinateY() + 1);
 			break;
-		case eInputKey::ARROW_UP:
+		case eInputKey::ARROW_UP:	//디버깅용
+			currentTetromino.SetCoordinate(currentTetromino.GetCoordinateX() - 1, currentTetromino.GetCoordinateY());
 			break;
 		case eInputKey::ARROW_DOWN:
+			currentTetromino.SetCoordinate(currentTetromino.GetCoordinateX() + 1, currentTetromino.GetCoordinateY());
 			break;
 		case eInputKey::Z:
 			currentTetromino.Rotate(eRotate::CLOCKWISE);
