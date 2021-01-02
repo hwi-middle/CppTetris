@@ -9,6 +9,6 @@ public:
 	eTitleActions ShowTitle(void);
 	void ShowHelp(void);
 	void StartGame(void);
-	bool CheckTimePassed();
+	bool CheckTimePassed(void);
 	eInputKey GetInputKey(bool bIsPlaying);
 };

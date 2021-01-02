@@ -2,7 +2,7 @@
 #include "myheader.h"
 #include "DisplayManager.h"
 
-DisplayManager::DisplayManager() :PLAY_AREA_HEIGHT(24), PLAY_AREA_WIDTH(10), bGameOver(false), bIsHoldSlotEmpty(true), bIsRefreshNeeded(true), TIME_TARGET(1.0f)
+DisplayManager::DisplayManager() :PLAY_AREA_HEIGHT(24), PLAY_AREA_WIDTH(10), bIsHoldSlotEmpty(true), bIsRefreshNeeded(true), TIME_TARGET(1.0f)
 {
 	t = clock();
 	nextSlot = Tetromino::GetRandomTetromino();
@@ -34,7 +34,12 @@ int DisplayManager::GetScreen(const int r, const int c) const
 
 void DisplayManager::DrawCurrentTertomino()
 {
-	system("cls");
+
+	if (currentTetromino->GetCoordinateX()==21)
+	{
+		FixCurrentTetromino();
+	}
+
 	int x = 0;
 	int y = 0;
 	for (int i = currentTetromino->GetCoordinateX(); i < currentTetromino->GetCoordinateX() + 4; i++)
@@ -63,6 +68,28 @@ void DisplayManager::ClearCurrentTetromino()
 		y = 0;
 		x++;
 	}
+}
+
+void DisplayManager::FixCurrentTetromino()
+{
+	int x = 0;
+	int y = 0;
+	for (int i = currentTetromino->GetCoordinateX(); i < currentTetromino->GetCoordinateX() + 4; i++)
+	{
+		for (int j = currentTetromino->GetCoordinateY(); j < currentTetromino->GetCoordinateY() + 4; j++)
+		{
+			if (currentTetromino->GetShape(x, y) == 2)
+			{
+				playArea[i][j] = 1;
+			}
+			y++;
+		}
+		y = 0;
+		x++;
+	}
+	delete currentTetromino;
+	Tetromino* currentTetromino = new Tetromino(Tetromino::GetRandomTetromino());
+	currentTetromino->SetCoordinate(0, 0);
 }
 
 void DisplayManager::InputValidGameKey(eInputKey key)
@@ -112,5 +139,15 @@ bool DisplayManager::CheckIsRefreshNeeded()
 
 bool DisplayManager::CheckIsGameOver()
 {
-	return bGameOver;
+	for (int i = 0; i < 4; i++)
+	{
+		for (int j = 0; j < PLAY_AREA_WIDTH; j++)
+		{
+			if (playArea[i][j] == 2)
+			{
+				return true;
+			}
+		}
+	}
+	return false;
 }

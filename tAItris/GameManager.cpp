@@ -13,6 +13,7 @@ void GameManager::StartGame(void)
 	{
 		if (displayManager->CheckIsRefreshNeeded())
 		{
+			system("cls");
 			displayManager->DrawCurrentTertomino();
 			for (int i = 4; i < displayManager->PLAY_AREA_HEIGHT; i++)
 			{
@@ -109,7 +110,7 @@ eTitleActions GameManager::ShowTitle(void)
 	}
 }
 
-bool GameManager::CheckTimePassed()
+bool GameManager::CheckTimePassed(void)
 {
 	static const float TIME_TARGET = 0.8f;
 	if ((clock() - (float)t) / CLOCKS_PER_SEC >= TIME_TARGET)
@@ -128,6 +129,7 @@ eInputKey GameManager::GetInputKey(bool bIsPlaying)
 		{
 			return eInputKey::TIME_PASSED;
 		}
+
 		int input = 0;
 		if (_kbhit())
 		{
