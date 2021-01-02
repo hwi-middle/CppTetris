@@ -152,6 +152,10 @@ eInputKey GameManager::GetInputKey(bool bIsPlaying)
 					break;
 				}
 			}
+			else if (input == 32)
+			{
+				return eInputKey::SPACE;
+			}
 			else if (input == '\r')
 			{
 				return eInputKey::ENTER;

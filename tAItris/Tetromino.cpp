@@ -225,12 +225,24 @@ void Tetromino::Rotate(const eRotate rot)
 	switch (rot)
 	{
 	case eRotate::CLOCKWISE:
-		if (currentRotateLevel == 3) currentRotateLevel = 0;
-		else currentRotateLevel++;
+		if (currentRotateLevel == 3)
+		{
+			currentRotateLevel = 0;
+		}
+		else
+		{
+			currentRotateLevel++;
+		}
 		break;
 	case eRotate::COUNTERCLOCKWISE:
-		if (currentRotateLevel == 0) currentRotateLevel = 3;
-		else currentRotateLevel--;
+		if (currentRotateLevel == 0)
+		{
+			currentRotateLevel = 3;
+		}
+		else
+		{
+			currentRotateLevel--;
+		}
 		break;
 	default:
 		assert(false);
@@ -249,7 +261,7 @@ void Tetromino::Rotate(const eRotate rot)
 	SetCoordinate(x, y);
 }
 
-int Tetromino::GetMinCoordinateX()
+int Tetromino::GetMinCoordinateY()
 {
 	int minCol = -3;
 	int leftIdx = 3;
@@ -268,7 +280,7 @@ int Tetromino::GetMinCoordinateX()
 	return minCol;
 }
 
-int Tetromino::GetMaxCoordinateX()
+int Tetromino::GetMaxCoordinateY()
 {
 	int maxCol = 7;
 	for (int i = 0; i < 4; i++)
@@ -280,6 +292,20 @@ int Tetromino::GetMaxCoordinateX()
 	}
 
 	return maxCol;
+}
+
+int Tetromino::GetMaxCoordinateX(void)
+{
+	int maxRow = 21;
+	for (int i = 0; i < 4; i++)
+	{
+		if (shape[3][i] != 0)
+		{
+			maxRow--;
+			break;
+		}
+	}
+	return maxRow;
 }
 
 int Tetromino::GetCoordinateX(void) const
@@ -294,10 +320,11 @@ int Tetromino::GetCoordinateY(void) const
 
 void Tetromino::SetCoordinate(int r, int c)
 {
-	int maxCol = GetMaxCoordinateX();
-	int minCol = GetMinCoordinateX();
+	int maxCol = GetMaxCoordinateY();
+	int minCol = GetMinCoordinateY();
 	if (c > maxCol) c = maxCol;
 	else if (c < minCol) c = minCol;
+
 	coordinate = { r,c };
 }
 
@@ -315,25 +342,32 @@ eTetromino Tetromino::GetRandomTetromino(void)
 	int randNum = dis(gen);
 	assert(randNum >= 0 && randNum <= 6);
 
-	if (randNum == 0) {
+	if (randNum == 0) 
+	{
 		return eTetromino::I;
 	}
-	else if (randNum == 1) {
+	else if (randNum == 1) 
+	{
 		return eTetromino::J;
 	}
-	else if (randNum == 2) {
+	else if (randNum == 2)
+	{
 		return eTetromino::L;
 	}
-	else if (randNum == 3) {
+	else if (randNum == 3) 
+	{
 		return eTetromino::O;
 	}
-	else if (randNum == 4) {
+	else if (randNum == 4) 
+	{
 		return eTetromino::S;
 	}
-	else if (randNum == 5) {
+	else if (randNum == 5) 
+	{
 		return eTetromino::Z;
 	}
-	else {
+	else 
+	{
 		return eTetromino::T;
 	}
 }

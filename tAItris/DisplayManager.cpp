@@ -34,9 +34,10 @@ int DisplayManager::GetScreen(const int r, const int c) const
 
 void DisplayManager::DrawCurrentTertomino()
 {
-
-	if (currentTetromino->GetCoordinateX()==21)
+	if (currentTetromino->GetCoordinateX() == currentTetromino->GetMaxCoordinateX() + 1)
 	{
+		std::cout << currentTetromino->GetCoordinateX() << " ";
+		currentTetromino->SetCoordinate(currentTetromino->GetCoordinateX() - 1, currentTetromino->GetCoordinateY());
 		FixCurrentTetromino();
 	}
 
@@ -44,7 +45,7 @@ void DisplayManager::DrawCurrentTertomino()
 	int y = 0;
 	for (int i = currentTetromino->GetCoordinateX(); i < currentTetromino->GetCoordinateX() + 4; i++)
 	{
-		for (int j = currentTetromino->GetCoordinateY(); j < currentTetromino->GetCoordinateY() + 4; j++)
+		for (int j = currentTetromino->GetCoordinateY(); j < currentTetromino->GetCoordinateY() + 4; j++) //디버깅 필요, delete 됐는데 접근한 듯
 		{
 			playArea[i][j] |= currentTetromino->GetShape(x, y);
 			y++;
@@ -122,6 +123,10 @@ void DisplayManager::InputValidGameKey(eInputKey key)
 		currentTetromino->Rotate(eRotate::COUNTERCLOCKWISE);
 		break;
 	case eInputKey::C:
+		break;
+	case eInputKey::SPACE:
+		currentTetromino->SetCoordinate(currentTetromino->GetMaxCoordinateX(), currentTetromino->GetCoordinateY());
+		FixCurrentTetromino();
 		break;
 	default:
 		bIsRefreshNeeded = false;

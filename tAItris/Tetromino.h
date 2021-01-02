@@ -15,7 +15,8 @@ public:
 	eTetromino GetType(void) const;
 	int GetShape(const int r, const int c);
 	void Rotate(const eRotate rot);
-	int GetMinCoordinateX(void);
+	int GetMinCoordinateY(void);
+	int GetMaxCoordinateY(void);
 	int GetMaxCoordinateX(void);
 	int GetCoordinateX(void) const;
 	int GetCoordinateY(void) const;
