@@ -12,6 +12,8 @@ private:
 	bool bGameOver;
 	eTetromino holdSlot;
 	eTetromino nextSlot;
+	const float TIME_TARGET;
+	clock_t t;
 public:
 	const int PLAY_AREA_HEIGHT;
 	const int PLAY_AREA_WIDTH;

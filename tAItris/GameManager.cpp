@@ -6,7 +6,7 @@
 void GameManager::StartGame(void)
 {
 	system("cls");
-
+	t = clock();
 	DisplayManager* displayManager = new DisplayManager();
 
 	while (displayManager->CheckIsGameOver() == false)
@@ -43,7 +43,7 @@ void GameManager::StartGame(void)
 			}
 			displayManager->ClearCurrentTetromino();
 		}
-		eInputKey key = GetInputKey();
+		eInputKey key = GetInputKey(true);
 		displayManager->InputValidGameKey(key);
 	}
 }
@@ -67,7 +67,8 @@ void GameManager::ShowHelp(void)
 eTitleActions GameManager::ShowTitle(void)
 {
 	system("cls");
-	std::vector<std::string> menu{
+	std::vector<std::string> menu
+	{
 		"> 게임 시작",
 		"  도움말",
 		"  리더보드",
@@ -85,7 +86,7 @@ eTitleActions GameManager::ShowTitle(void)
 			std::cout << item << "\n";
 		}
 
-		eInputKey key = GetInputKey();
+		eInputKey key = GetInputKey(false);
 		switch (key)
 		{
 		case eInputKey::ARROW_UP:
@@ -108,12 +109,25 @@ eTitleActions GameManager::ShowTitle(void)
 	}
 }
 
+bool GameManager::CheckTimePassed()
+{
+	static const float TIME_TARGET = 0.8f;
+	if ((clock() - (float)t) / CLOCKS_PER_SEC >= TIME_TARGET)
+	{
+		t = clock();
+		return true;
+	}
+	return false;
+}
 
-
-eInputKey GameManager::GetInputKey(void)
+eInputKey GameManager::GetInputKey(bool bIsPlaying)
 {
 	while (true)
 	{
+		if (bIsPlaying && CheckTimePassed())
+		{
+			return eInputKey::TIME_PASSED;
+		}
 		int input = 0;
 		if (_kbhit())
 		{
@@ -154,7 +168,7 @@ eInputKey GameManager::GetInputKey(void)
 			}
 			else
 			{
-				return eInputKey::INVALID;
+				return eInputKey::TIME_PASSED;
 			}
 		}
 	}

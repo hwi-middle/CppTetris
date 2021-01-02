@@ -4,9 +4,11 @@
 class GameManager
 {
 private:
+	clock_t t;
 public:
 	eTitleActions ShowTitle(void);
 	void ShowHelp(void);
 	void StartGame(void);
-	eInputKey GetInputKey(void);
+	bool CheckTimePassed();
+	eInputKey GetInputKey(bool bIsPlaying);
 };

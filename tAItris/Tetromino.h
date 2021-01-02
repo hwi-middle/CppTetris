@@ -12,7 +12,6 @@ private:
 	int currentRotateLevel;
 public:
 	Tetromino(eTetromino t);
-	static int GetTetromino(int a, int b, int c, int d);
 	eTetromino GetType(void) const;
 	int GetShape(const int r, const int c);
 	void Rotate(const eRotate rot);
@@ -21,5 +20,6 @@ public:
 	int GetCoordinateX(void) const;
 	int GetCoordinateY(void) const;
 	void SetCoordinate(int r, int c);
+	int GetRotateLevel(void);
 	static eTetromino GetRandomTetromino(void);
 };

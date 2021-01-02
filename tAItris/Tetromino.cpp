@@ -15,11 +15,6 @@ Tetromino::Tetromino(const eTetromino t) :type(t), currentRotateLevel(0)
 	}
 }
 
-int Tetromino::GetTetromino(int a, int b, int c, int d)
-{
-	return tetrominoes[a][b][c][d];
-}
-
 const int Tetromino::tetrominoes[7][4][4][4] =
 {
 	//I¹Ì³ë
@@ -304,6 +299,11 @@ void Tetromino::SetCoordinate(int r, int c)
 	if (c > maxCol) c = maxCol;
 	else if (c < minCol) c = minCol;
 	coordinate = { r,c };
+}
+
+int Tetromino::GetRotateLevel(void)
+{
+	return currentRotateLevel;
 }
 
 eTetromino Tetromino::GetRandomTetromino(void)

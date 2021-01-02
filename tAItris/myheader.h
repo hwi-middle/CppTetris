@@ -25,7 +25,7 @@ enum class eInputKey	//유효한 입력 키들
 	X,
 	C,
 	SPACE,
-	INVALID
+	TIME_PASSED
 };
 
 enum class eTetromino	//테트로미노의 타입들

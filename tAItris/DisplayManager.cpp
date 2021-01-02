@@ -2,8 +2,9 @@
 #include "myheader.h"
 #include "DisplayManager.h"
 
-DisplayManager::DisplayManager() :PLAY_AREA_HEIGHT(24), PLAY_AREA_WIDTH(10), bGameOver(false), bIsHoldSlotEmpty(true), bIsRefreshNeeded(true)
+DisplayManager::DisplayManager() :PLAY_AREA_HEIGHT(24), PLAY_AREA_WIDTH(10), bGameOver(false), bIsHoldSlotEmpty(true), bIsRefreshNeeded(true), TIME_TARGET(1.0f)
 {
+	t = clock();
 	nextSlot = Tetromino::GetRandomTetromino();
 	for (int i = 0; i < PLAY_AREA_HEIGHT; i++)
 	{
@@ -66,7 +67,10 @@ void DisplayManager::ClearCurrentTetromino()
 
 void DisplayManager::InputValidGameKey(eInputKey key)
 {
+	std::pair<int, int> curCoordinate = { currentTetromino->GetCoordinateX(), currentTetromino->GetCoordinateY() };
+	int curRotateLevel = currentTetromino->GetRotateLevel();
 	bIsRefreshNeeded = true;
+
 	switch (key)
 	{
 	case eInputKey::ARROW_LEFT:
@@ -81,6 +85,7 @@ void DisplayManager::InputValidGameKey(eInputKey key)
 		break;
 #endif // _DEBUG
 	case eInputKey::ARROW_DOWN:
+	case eInputKey::TIME_PASSED:
 		currentTetromino->SetCoordinate(currentTetromino->GetCoordinateX() + 1, currentTetromino->GetCoordinateY());
 		break;
 	case eInputKey::Z:
@@ -95,6 +100,9 @@ void DisplayManager::InputValidGameKey(eInputKey key)
 		bIsRefreshNeeded = false;
 		break;
 	}
+	std::pair<int, int> nextCoordinate = { currentTetromino->GetCoordinateX(), currentTetromino->GetCoordinateY() };
+	int nextRotateLevel = currentTetromino->GetRotateLevel();
+	if (curCoordinate == nextCoordinate && curRotateLevel == nextRotateLevel) bIsRefreshNeeded = false;
 }
 
 bool DisplayManager::CheckIsRefreshNeeded()
