@@ -15,6 +15,11 @@ Tetromino::Tetromino(const eTetromino t) :type(t), currentRotateLevel(0)
 	}
 }
 
+int Tetromino::GetTetromino(int a, int b, int c, int d)
+{
+	return tetrominoes[a][b][c][d];
+}
+
 const int Tetromino::tetrominoes[7][4][4][4] =
 {
 	//I미노
@@ -208,7 +213,7 @@ const int Tetromino::tetrominoes[7][4][4][4] =
 	},
 };
 
-eTetromino Tetromino::GetType() const
+eTetromino Tetromino::GetType(void) const
 {
 	return type;
 }
@@ -249,33 +254,28 @@ void Tetromino::Rotate(const eRotate rot)
 	SetCoordinate(x, y);
 }
 
-int Tetromino::GetCoordinateX() const
-{
-	return coordinate.X;
-}
-
-int Tetromino::GetCoordinateY() const
-{
-	return coordinate.Y;
-}
-void Tetromino::SetCoordinate(int r, int c)
+int Tetromino::GetMinCoordinateX()
 {
 	int minCol = -3;
-	int maxCol = 7;
-
-	int minIdx = 4;
+	int leftIdx = 3;
 	for (int i = 0; i < 4; i++)
 	{
 		for (int j = 0; j < 3; j++)
 		{
 			if (shape[i][j] != 0)
 			{
-				minIdx = std::min(minIdx, j);
+				leftIdx = std::min(leftIdx, j);
 			}
 		}
 	}
-	if (minIdx != 4) minCol += 3 - minIdx;
+	minCol += 3 - leftIdx;
 
+	return minCol;
+}
+
+int Tetromino::GetMaxCoordinateX()
+{
+	int maxCol = 7;
 	for (int i = 0; i < 4; i++)
 	{
 		if (shape[i][3] != 0)
@@ -284,10 +284,56 @@ void Tetromino::SetCoordinate(int r, int c)
 		}
 	}
 
-	int minRow;
-	int maxRow;
+	return maxCol;
+}
 
+int Tetromino::GetCoordinateX(void) const
+{
+	return coordinate.X;
+}
+
+int Tetromino::GetCoordinateY(void) const
+{
+	return coordinate.Y;
+}
+
+void Tetromino::SetCoordinate(int r, int c)
+{
+	int maxCol = GetMaxCoordinateX();
+	int minCol = GetMinCoordinateX();
 	if (c > maxCol) c = maxCol;
 	else if (c < minCol) c = minCol;
 	coordinate = { r,c };
+}
+
+eTetromino Tetromino::GetRandomTetromino(void)
+{
+	std::random_device rd;
+	std::mt19937 gen(rd());
+	std::uniform_int_distribution<int> dis(0, 6);	//균등분포(Uniform Distribution)
+
+	int randNum = dis(gen);
+	assert(randNum >= 0 && randNum <= 6);
+
+	if (randNum == 0) {
+		return eTetromino::I;
+	}
+	else if (randNum == 1) {
+		return eTetromino::J;
+	}
+	else if (randNum == 2) {
+		return eTetromino::L;
+	}
+	else if (randNum == 3) {
+		return eTetromino::O;
+	}
+	else if (randNum == 4) {
+		return eTetromino::S;
+	}
+	else if (randNum == 5) {
+		return eTetromino::Z;
+	}
+	else {
+		return eTetromino::T;
+	}
 }

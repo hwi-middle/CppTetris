@@ -7,23 +7,24 @@
 
 int main(void)
 {
-	GameManager manager;
+	GameManager* gameManager = new GameManager();
 	eTitleActions selection;
 	while (true)
 	{
-		selection = manager.ShowTitle();
+		selection = gameManager->ShowTitle();
 
 		switch (selection)
 		{
 		case eTitleActions::START:
-			manager.StartGame();
+			gameManager->StartGame();
 			break;
 		case eTitleActions::HELP:
-			manager.ShowHelp();
+			gameManager->ShowHelp();
 			break;
 		case eTitleActions::LEADERBOARD:
 			break;
 		case eTitleActions::EXIT:
+			delete gameManager;
 			return 0;
 			break;
 		default:

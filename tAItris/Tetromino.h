@@ -1,5 +1,6 @@
 #pragma once
 #include "myheader.h"
+
 class Tetromino
 {
 private:
@@ -11,10 +12,14 @@ private:
 	int currentRotateLevel;
 public:
 	Tetromino(eTetromino t);
-	eTetromino GetType() const;
+	static int GetTetromino(int a, int b, int c, int d);
+	eTetromino GetType(void) const;
 	int GetShape(const int r, const int c);
 	void Rotate(const eRotate rot);
-	int GetCoordinateX() const;
-	int GetCoordinateY() const;
-	void SetCoordinate(const int r, const int c);
+	int GetMinCoordinateX(void);
+	int GetMaxCoordinateX(void);
+	int GetCoordinateX(void) const;
+	int GetCoordinateY(void) const;
+	void SetCoordinate(int r, int c);
+	static eTetromino GetRandomTetromino(void);
 };

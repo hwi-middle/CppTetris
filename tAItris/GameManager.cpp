@@ -1,129 +1,50 @@
 #include "GameManager.h"
+#include "DisplayManager.h"
 #include "myheader.h"
 #include "Tetromino.h"
 
 void GameManager::StartGame(void)
 {
 	system("cls");
-	const int PLAY_AREA_HEIGHT = 24;
-	const int PLAY_AREA_WIDTH = 10;
-	int playArea[PLAY_AREA_HEIGHT][PLAY_AREA_WIDTH];	//블럭들이 배치되는 공간. 0행~3행은 내려오는 구간, 화면에 표시되지 않으며 이 곳에 블럭 최종 배치시 게임오버
-														//0: 블럭 없음
-														//1: 굳은 블럭
-														//2: 놓고 있는 블럭
-	for (int i = 0; i < PLAY_AREA_HEIGHT; i++)
+
+	DisplayManager* displayManager = new DisplayManager();
+
+	while (displayManager->CheckIsGameOver() == false)
 	{
-		memset(playArea[i], 0, sizeof(playArea[i]));
-	}
-
-	//eTetromino holdSlot;
-	std::vector<eTetromino> nextSlot(3);
-
-#ifdef _DEBUG
-	std::cout << "테트로미노 선택\n";
-	std::cout << "1.I\n2.J\n3.L\n4.O\n5.S\n6.Z\n7.T\n";
-	int sel;
-	std::cin >> sel;
-	Tetromino currentTetromino((eTetromino)--sel);
-	system("cls");
-#else
-	Tetromino currentTetromino(GetRandomTetromino());
-	for (int i = 0; i < nextSlot.size(); i++)
-	{
-		nextSlot[i] = GetRandomTetromino();
-	}
-#endif // _DEBUG
-
-	bool bGameOver = false;
-	while (bGameOver != true)
-	{
+		if (displayManager->CheckIsRefreshNeeded())
 		{
-			system("cls");
-			int x = 0;
-			int y = 0;
-			for (int i = currentTetromino.GetCoordinateX(); i < currentTetromino.GetCoordinateX() + 4; i++)
+			displayManager->DrawCurrentTertomino();
+			for (int i = 4; i < displayManager->PLAY_AREA_HEIGHT; i++)
 			{
-				for (int j = currentTetromino.GetCoordinateY(); j < currentTetromino.GetCoordinateY() + 4; j++)
+				for (int j = 0; j < 10; j++)
 				{
-					playArea[i][j] |= currentTetromino.GetShape(x, y);
-					y++;
+					std::cout << ". ";
 				}
-				y = 0;
-				x++;
+				for (int j = 0; j < displayManager->PLAY_AREA_WIDTH; j++)
+				{
+					if (displayManager->GetScreen(i, j) == 1)
+					{
+						std::cout << "■";
+					}
+					else if (displayManager->GetScreen(i, j) == 2)
+					{
+						std::cout << "□";
+					}
+					else
+					{
+						std::cout << "  ";
+					}
+				}
+				for (int j = 0; j < 10; j++)
+				{
+					std::cout << ". ";
+				}
+				std::cout << "\n";
 			}
+			displayManager->ClearCurrentTetromino();
 		}
-
-		for (int i = 4; i < PLAY_AREA_HEIGHT; i++)
-		{
-			for (int j = 0; j < 10; j++)
-			{
-				std::cout << ". ";
-			}
-			for (int j = 0; j < PLAY_AREA_WIDTH; j++)
-			{
-				if (playArea[i][j] == 1)
-				{
-					std::cout << "■";
-				}
-				else if (playArea[i][j] == 2)
-				{
-					std::cout << "□";
-				}
-				else
-				{
-					std::cout << "  ";
-				}
-			}
-			for (int j = 0; j < 10; j++)
-			{
-				std::cout << ". ";
-			}
-			std::cout << "\n";
-		}
-
-		{
-			int x = 0;
-			int y = 0;
-			for (int i = currentTetromino.GetCoordinateX(); i < currentTetromino.GetCoordinateX() + 4; i++)
-			{
-				for (int j = currentTetromino.GetCoordinateY(); j < currentTetromino.GetCoordinateY() + 4; j++)
-				{
-					playArea[i][j] ^= currentTetromino.GetShape(x, y);
-					y++;
-				}
-				y = 0;
-				x++;
-			}
-		}
-
 		eInputKey key = GetInputKey();
-		switch (key)
-		{
-		case eInputKey::ARROW_LEFT:
-			currentTetromino.SetCoordinate(currentTetromino.GetCoordinateX(), currentTetromino.GetCoordinateY() - 1);
-			break;
-		case eInputKey::ARROW_RIGHT:
-			currentTetromino.SetCoordinate(currentTetromino.GetCoordinateX(), currentTetromino.GetCoordinateY() + 1);
-			break;
-#ifdef _DEBUG
-		case eInputKey::ARROW_UP:
-			currentTetromino.SetCoordinate(currentTetromino.GetCoordinateX() - 1, currentTetromino.GetCoordinateY());
-			break;
-#endif // _DEBUG
-		case eInputKey::ARROW_DOWN:
-			currentTetromino.SetCoordinate(currentTetromino.GetCoordinateX() + 1, currentTetromino.GetCoordinateY());
-			break;
-		case eInputKey::Z:
-			currentTetromino.Rotate(eRotate::CLOCKWISE);
-			break;
-		case eInputKey::X:
-			currentTetromino.Rotate(eRotate::COUNTERCLOCKWISE);
-			break;
-		case eInputKey::C:
-			break;
-		default:
-			break;
-		}
+		displayManager->InputValidGameKey(key);
 	}
 }
 
@@ -187,37 +108,7 @@ eTitleActions GameManager::ShowTitle(void)
 	}
 }
 
-eTetromino GameManager::GetRandomTetromino(void)
-{
-	//난수 관련 설정
-	std::random_device rd;
-	std::mt19937 gen(rd());
-	std::uniform_int_distribution<int> dis(0, 6);	//균등분포(Uniform Distribution)
 
-	int randNum = dis(gen);
-	assert(randNum >= 0 && randNum <= 6); //randNum의 범위 Assert
-	if (randNum == 0) {
-		return eTetromino::I;
-	}
-	else if (randNum == 1) {
-		return eTetromino::J;
-	}
-	else if (randNum == 2) {
-		return eTetromino::L;
-	}
-	else if (randNum == 3) {
-		return eTetromino::O;
-	}
-	else if (randNum == 4) {
-		return eTetromino::S;
-	}
-	else if (randNum == 5) {
-		return eTetromino::Z;
-	}
-	else {
-		return eTetromino::T;
-	}
-}
 
 eInputKey GameManager::GetInputKey(void)
 {

@@ -8,6 +8,5 @@ public:
 	eTitleActions ShowTitle(void);
 	void ShowHelp(void);
 	void StartGame(void);
-	eTetromino GetRandomTetromino(void);
 	eInputKey GetInputKey(void);
 };
