@@ -28,8 +28,9 @@ public:
 	void DrawCurrentTertomino(void);
 	void FixCurrentTetromino(void);
 	void Hold();
-	bool CheckCollideWithOtherTetromino();
 	bool CheckCollideWithWall();
+	bool CheckCollideWithFloor();
+	bool CheckCollideWithOtherTetromino();
 	void InputValidGameKey(eInputKey key);
 	bool CheckIsHoldSlotEmpty(void);
 	bool CheckIsRefreshNeeded(void);

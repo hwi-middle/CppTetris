@@ -267,39 +267,6 @@ void Tetromino::Rotate(const eRotate rot)
 	SetCoordinate(x, y);
 }
 
-int Tetromino::GetMinCoordinateY()
-{
-	int minCol = -3;
-	int leftIdx = 3;
-	for (int i = 0; i < 4; i++)
-	{
-		for (int j = 0; j < 3; j++)
-		{
-			if (shape[i][j] != 0)
-			{
-				leftIdx = std::min(leftIdx, j);
-			}
-		}
-	}
-	minCol += 3 - leftIdx;
-
-	return minCol;
-}
-
-int Tetromino::GetMaxCoordinateY()
-{
-	int maxCol = 7;
-	for (int i = 0; i < 4; i++)
-	{
-		if (shape[i][3] != 0)
-		{
-			maxCol = 6;
-		}
-	}
-
-	return maxCol;
-}
-
 int Tetromino::GetMaxCoordinateX(void)
 {
 	int maxRow = 21;
@@ -326,11 +293,6 @@ int Tetromino::GetCoordinateY(void) const
 
 void Tetromino::SetCoordinate(int r, int c)
 {
-	int maxCol = GetMaxCoordinateY();
-	int minCol = GetMinCoordinateY();
-	if (c > maxCol) c = maxCol;
-	else if (c < minCol) c = minCol;
-
 	coordinate = { r,c };
 }
 
