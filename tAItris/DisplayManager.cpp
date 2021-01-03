@@ -2,7 +2,7 @@
 #include "myheader.h"
 #include "DisplayManager.h"
 
-DisplayManager::DisplayManager() :PLAY_AREA_HEIGHT(24), PLAY_AREA_WIDTH(10), bIsHoldSlotEmpty(true), bIsRefreshNeeded(true), TIME_TARGET(1.2f)
+DisplayManager::DisplayManager() : score(0), PLAY_AREA_HEIGHT(24), PLAY_AREA_WIDTH(10), bIsHoldSlotEmpty(true), bIsRefreshNeeded(true), TIME_TARGET(1.2f)
 {
 	t = clock();
 	for (int i = 0; i < PLAY_AREA_HEIGHT; i++)
@@ -12,6 +12,11 @@ DisplayManager::DisplayManager() :PLAY_AREA_HEIGHT(24), PLAY_AREA_WIDTH(10), bIs
 
 	currentTetromino = new Tetromino(Tetromino::GetRandomTetromino());
 	nextTetromino = Tetromino::GetRandomTetromino();
+}
+
+int DisplayManager::GetScore(void) const
+{
+	return score;
 }
 
 int DisplayManager::GetScreen(const int r, const int c) const
@@ -37,7 +42,13 @@ void DisplayManager::DrawCurrentTertomino()
 	{
 		for (int j = currentTetromino->GetCoordinateY(); j < currentTetromino->GetCoordinateY() + 4; j++)
 		{
-			playArea[i][j] |= currentTetromino->GetShape(x, y);
+			if (j >= 0)
+			{
+				if (currentTetromino->GetShape(x, y) == 2 && playArea[i][j] == 0)
+				{
+					playArea[i][j] = 2;
+				}
+			}
 			y++;
 		}
 		y = 0;
@@ -53,7 +64,13 @@ void DisplayManager::ClearCurrentTetromino()
 	{
 		for (int j = currentTetromino->GetCoordinateY(); j < currentTetromino->GetCoordinateY() + 4; j++)
 		{
-			playArea[i][j] ^= currentTetromino->GetShape(x, y);
+			if (j >= 0)
+			{
+				if (playArea[i][j] == 2)
+				{
+					playArea[i][j] = 0;
+				}
+			}
 			y++;
 		}
 		y = 0;
@@ -79,6 +96,7 @@ void DisplayManager::FixCurrentTetromino()
 		y = 0;
 		x++;
 	}
+	ClearLine();
 	delete currentTetromino;
 	Tetromino* currentTetromino = new Tetromino(nextTetromino);
 	nextTetromino = Tetromino::GetRandomTetromino();
@@ -170,6 +188,32 @@ bool DisplayManager::CheckCollideWithOtherTetromino()
 		x++;
 	}
 	return false;
+}
+
+void DisplayManager::ClearLine()
+{
+	for (int i = 4; i < PLAY_AREA_HEIGHT; i++)
+	{
+		bool bIsCleared = true;
+		for (int j = 0; j < PLAY_AREA_WIDTH; j++)
+		{
+			if (playArea[i][j] != 1) //µð¹ö±ëÇÊ¿ä
+			{
+				bIsCleared = false;
+			}
+		}
+		if (bIsCleared)
+		{
+			for (int j = i; j > 0; j--)
+			{
+				for (int k = 0; k < PLAY_AREA_WIDTH; k++)
+				{
+					playArea[j][k] = playArea[j - 1][k];
+				}
+			}
+			score++;
+		}
+	}
 }
 
 void DisplayManager::InputValidGameKey(eInputKey key)

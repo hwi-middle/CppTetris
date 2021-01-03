@@ -3,6 +3,7 @@ class DisplayManager
 {
 private:
 	Tetromino* currentTetromino;
+	int score;
 	int playArea[24][10];	//블럭들이 배치되는 공간. 0행~3행은 내려오는 구간, 화면에 표시되지 않으며 이 곳에 블럭 최종 배치시 게임오버
 							//0: 블럭 없음
 							//1: 굳은 블럭
@@ -19,6 +20,7 @@ public:
 	const int PLAY_AREA_WIDTH;
 
 	DisplayManager();
+	int GetScore(void) const;
 	int GetScreen(const int r, const int c) const;
 	eTetromino SwapHold(void);
 	eTetromino GetHoldSlot(void);
@@ -31,6 +33,7 @@ public:
 	bool CheckCollideWithWall();
 	bool CheckCollideWithFloor();
 	bool CheckCollideWithOtherTetromino();
+	void ClearLine();
 	void InputValidGameKey(eInputKey key);
 	bool CheckIsHoldSlotEmpty(void);
 	bool CheckIsRefreshNeeded(void);

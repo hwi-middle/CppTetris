@@ -15,7 +15,7 @@ void GameManager::StartGame(void)
 		{
 			system("cls");
 			std::cout << ". . . . . . . . . C L E A R E D : ";
-			std::cout << std::setfill('0') << std::setw(8) << 0;
+			std::cout << std::setfill('0') << std::setw(8) << displayManager->GetScore();
 			std::cout << ". . . . . . . . .\n";
 
 			for (int i = 0; i < 2; i++)
