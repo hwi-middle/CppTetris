@@ -143,6 +143,10 @@ void GameManager::StartGame(void)
 		eInputKey key = GetInputKey(true);
 		displayManager->InputValidGameKey(key);
 	}
+	delete displayManager;
+	system("cls");
+	std::cout << "GameOver";
+	system("pause");
 }
 
 void GameManager::ShowHelp(void)

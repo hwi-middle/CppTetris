@@ -157,7 +157,7 @@ bool DisplayManager::CheckCollideWithOtherTetromino()
 	{
 		for (int j = currentTetromino->GetCoordinateY(); j < currentTetromino->GetCoordinateY() + 4; j++)
 		{
-			if (j > 0)
+			if (j >= 0)
 			{
 				if (currentTetromino->GetShape(x, y) == 2 && playArea[i][j] == 1)
 				{
@@ -271,7 +271,7 @@ bool DisplayManager::CheckIsGameOver()
 	{
 		for (int j = 0; j < PLAY_AREA_WIDTH; j++)
 		{
-			if (playArea[i][j] == 2)
+			if (playArea[i][j] == 1)
 			{
 				return true;
 			}

@@ -16,10 +16,9 @@ public:
 	int GetShape(const int r, const int c) const;
 	static int GetSpecificShape(eTetromino t, const int rot, const int r, const int c);
 	void Rotate(const eRotate rot);
-	int GetMaxCoordinateX(void);
 	int GetCoordinateX(void) const;
 	int GetCoordinateY(void) const;
-	void SetCoordinate(int r, int c);
+	void SetCoordinate(const int r, const int c);
 	int GetRotateLevel(void);
 	static eTetromino GetRandomTetromino(void);
 };

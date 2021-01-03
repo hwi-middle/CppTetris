@@ -267,20 +267,6 @@ void Tetromino::Rotate(const eRotate rot)
 	SetCoordinate(x, y);
 }
 
-int Tetromino::GetMaxCoordinateX(void)
-{
-	int maxRow = 21;
-	for (int i = 0; i < 4; i++)
-	{
-		if (shape[3][i] != 0)
-		{
-			maxRow--;
-			break;
-		}
-	}
-	return maxRow;
-}
-
 int Tetromino::GetCoordinateX(void) const
 {
 	return coordinate.X;
@@ -291,7 +277,7 @@ int Tetromino::GetCoordinateY(void) const
 	return coordinate.Y;
 }
 
-void Tetromino::SetCoordinate(int r, int c)
+void Tetromino::SetCoordinate(const int r, const int c)
 {
 	coordinate = { r,c };
 }
