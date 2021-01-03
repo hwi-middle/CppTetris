@@ -22,10 +22,8 @@ public:
 	DisplayManager();
 	int GetScore(void) const;
 	int GetScreen(const int r, const int c) const;
-	eTetromino SwapHold(void);
-	eTetromino GetHoldSlot(void);
-	eTetromino GetNextSlot(void);
-	void SetNextSlot(void);
+	eTetromino GetHoldSlot(void) const;
+	eTetromino GetNextSlot(void) const;
 	void ClearCurrentTetromino(void);
 	void DrawCurrentTertomino(void);
 	void FixCurrentTetromino(void);
