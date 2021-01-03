@@ -185,7 +185,7 @@ void GameManager::StartGame(void)
 	std::cout << "##     ##   ## ##   ##       ##    ##  \n";
 	std::cout << " #######     ###    ######## ##     ## \n\n";
 	std::cout << "Score: " << displayManager->GetScore() << "\n";
-	std::cout << "Cleared: " << displayManager->GetClearedLine() << "line";
+	std::cout << "Cleared: " << displayManager->GetClearedLine() << " line";
 	if (displayManager->GetClearedLine() > 1)
 	{
 		std::cout << "s";

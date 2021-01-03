@@ -1,16 +1,30 @@
-#include "GameManager.h"
+ï»¿#include "GameManager.h"
 #include "myheader.h"
 #include "DisplayManager.h"
 
 DisplayManager::DisplayManager() : clearedLine(0), score(0), PLAY_AREA_HEIGHT(24), PLAY_AREA_WIDTH(10), bIsHoldSlotEmpty(true), bIsRefreshNeeded(true), TIME_TARGET(1.2f)
 {
+#ifdef _DEBUG
+	std::cout << "í…ŒíŠ¸ë¡œë¯¸ë…¸ ì„ íƒ\n";
+	std::cout << "1.I\n2.J\n3.L\n4.O\n5.S\n6.Z\n7.T\n";
+	int sel;
+	std::cin >> sel;
+	currentTetromino = new Tetromino((eTetromino)--sel);
+	system("cls");
+#else
+	currentTetromino = new Tetromino(Tetromino::GetRandomTetromino());
+	for (int i = 0; i < nextSlot.size(); i++)
+	{
+		nextSlot[i] = Tetromino::GetRandomTetromino();
+	}
+#endif // _DEBUG
 	t = clock();
 	for (int i = 0; i < PLAY_AREA_HEIGHT; i++)
 	{
 		memset(playArea[i], 0, sizeof(playArea[i]));
 	}
 
-	currentTetromino = new Tetromino(Tetromino::GetRandomTetromino());
+	//currentTetromino = new Tetromino(Tetromino::GetRandomTetromino());
 	nextTetromino = Tetromino::GetRandomTetromino();
 }
 
@@ -69,7 +83,7 @@ void DisplayManager::ClearCurrentTetromino()
 	{
 		for (int j = currentTetromino->GetCoordinateY(); j < currentTetromino->GetCoordinateY() + 4; j++)
 		{
-			if (j >= 0)
+			if (j >= 0 && j < PLAY_AREA_WIDTH)
 			{
 				if (playArea[i][j] == 2)
 				{
@@ -267,14 +281,14 @@ void DisplayManager::InputValidGameKey(eInputKey key)
 		break;
 	case eInputKey::Z:
 		currentTetromino->Rotate(eRotate::CLOCKWISE);
-		//È¸Àü ÈÄ Ãæµ¹ ½Ã ÁÂ¿ì·Î ¿Å°Üº¸°í ±×·¡µµ ¾ÈµÇ¸é È¸Àü ¸·À½
+		//íšŒì „ í›„ ì¶©ëŒ ì‹œ ì¢Œìš°ë¡œ ì˜®ê²¨ë³´ê³  ê·¸ëž˜ë„ ì•ˆë˜ë©´ íšŒì „ ë§‰ìŒ
 		if (CheckCollideWithWall() == true || CheckCollideWithOtherTetromino() == true)
 		{
 			int originalCoordinateX = currentTetromino->GetCoordinateX();
 			int originalCoordinateY = currentTetromino->GetCoordinateY();
 
 			bool bSuccess = false;
-			//¿À¸¥ÂÊÀ¸·Î ¿Å°Üº¸±â
+			//ì˜¤ë¥¸ìª½ìœ¼ë¡œ ì˜®ê²¨ë³´ê¸°
 			for (int i = 1; i <= 3; i++)
 			{
 				currentTetromino->SetCoordinate(currentTetromino->GetCoordinateX(), currentTetromino->GetCoordinateY() + 1);
@@ -290,7 +304,7 @@ void DisplayManager::InputValidGameKey(eInputKey key)
 				break;
 			}
 
-			//¿ÞÂÊÀ¸·Î ¿Å°Üº¸±â
+			//ì™¼ìª½ìœ¼ë¡œ ì˜®ê²¨ë³´ê¸°
 			currentTetromino->SetCoordinate(originalCoordinateX, originalCoordinateY);
 			for (int i = 1; i <= 3; i++)
 			{
@@ -306,7 +320,7 @@ void DisplayManager::InputValidGameKey(eInputKey key)
 				break;
 			}
 
-			//ÁÂ¿ì ¸ðµÎ ½ÇÆÐ, È¸Àü º¹±¸
+			//ì¢Œìš° ëª¨ë‘ ì‹¤íŒ¨, íšŒì „ ë³µêµ¬
 			currentTetromino->SetCoordinate(originalCoordinateX, originalCoordinateY);
 			currentTetromino->Rotate(eRotate::COUNTERCLOCKWISE);
 			bIsRefreshNeeded = false;
@@ -314,14 +328,14 @@ void DisplayManager::InputValidGameKey(eInputKey key)
 		break;
 	case eInputKey::X:
 		currentTetromino->Rotate(eRotate::COUNTERCLOCKWISE);
-		//È¸Àü ÈÄ Ãæµ¹ ½Ã ÁÂ¿ì·Î ¿Å°Üº¸°í ±×·¡µµ ¾ÈµÇ¸é È¸Àü ¸·À½
+		//íšŒì „ í›„ ì¶©ëŒ ì‹œ ì¢Œìš°ë¡œ ì˜®ê²¨ë³´ê³  ê·¸ëž˜ë„ ì•ˆë˜ë©´ íšŒì „ ë§‰ìŒ
 		if (CheckCollideWithWall() == true || CheckCollideWithOtherTetromino() == true)
 		{
 			int originalCoordinateX = currentTetromino->GetCoordinateX();
 			int originalCoordinateY = currentTetromino->GetCoordinateY();
 
 			bool bSuccess = false;
-			//¿À¸¥ÂÊÀ¸·Î ¿Å°Üº¸±â
+			//ì˜¤ë¥¸ìª½ìœ¼ë¡œ ì˜®ê²¨ë³´ê¸°
 			for (int i = 1; i <= 3; i++)
 			{
 				currentTetromino->SetCoordinate(currentTetromino->GetCoordinateX(), currentTetromino->GetCoordinateY() + i);
@@ -336,7 +350,7 @@ void DisplayManager::InputValidGameKey(eInputKey key)
 				break;
 			}
 
-			//¿ÞÂÊÀ¸·Î ¿Å°Üº¸±â
+			//ì™¼ìª½ìœ¼ë¡œ ì˜®ê²¨ë³´ê¸°
 			currentTetromino->SetCoordinate(originalCoordinateX, originalCoordinateY);
 			for (int i = 1; i <= 3; i++)
 			{
@@ -352,7 +366,7 @@ void DisplayManager::InputValidGameKey(eInputKey key)
 				break;
 			}
 
-			//ÁÂ¿ì ¸ðµÎ ½ÇÆÐ, È¸Àü º¹±¸
+			//ì¢Œìš° ëª¨ë‘ ì‹¤íŒ¨, íšŒì „ ë³µêµ¬
 			currentTetromino->SetCoordinate(originalCoordinateX, originalCoordinateY);
 			currentTetromino->Rotate(eRotate::CLOCKWISE);
 			bIsRefreshNeeded = false;
