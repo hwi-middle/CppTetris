@@ -13,7 +13,8 @@ private:
 public:
 	Tetromino(eTetromino t);
 	eTetromino GetType(void) const;
-	int GetShape(const int r, const int c);
+	int GetShape(const int r, const int c) const;
+	static int GetSpecificShape(eTetromino t, const int rot, const int r, const int c);
 	void Rotate(const eRotate rot);
 	int GetMinCoordinateY(void);
 	int GetMaxCoordinateY(void);

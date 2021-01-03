@@ -5,6 +5,7 @@
 #include <cassert>	//Assertion에 필요
 #include <conio.h>	//키 검출 등에 필요
 #include <random>	//랜덤에 필요
+#include <iomanip>
 
 enum class eTitleActions	//타이틀 화면에서 선택할 수 있는 동작들
 {

@@ -14,13 +14,67 @@ void GameManager::StartGame(void)
 		if (displayManager->CheckIsRefreshNeeded())
 		{
 			system("cls");
-			displayManager->DrawCurrentTertomino();
-			for (int i = 4; i < displayManager->PLAY_AREA_HEIGHT; i++)
+			std::cout << ". . . . . . . . . C L E A R E D : ";
+			std::cout << std::setfill('0') << std::setw(8) << 0;
+			std::cout << ". . . . . . . . .\n";
+
+			for (int i = 0; i < 2; i++)
 			{
-				for (int j = 0; j < 10; j++)
+				for (int j = 0; j < 30; j++)
 				{
 					std::cout << ". ";
 				}
+				std::cout << "\n";
+			}
+			std::cout << ". . . H O L D . . . . . . . . . . . . . . . . N E X T . . .\n";
+			displayManager->DrawCurrentTertomino();
+			for (int i = 4; i < displayManager->PLAY_AREA_HEIGHT; i++)
+			{
+				//Hold
+				if (i <= 7)
+				{
+					for (int j = 0; j < 3; j++)
+					{
+						std::cout << ". ";
+					}
+
+					if (displayManager->CheckIsHoldSlotEmpty() == false)
+					{
+						for (int j = 0; j < 4; j++)
+						{
+							int shape = Tetromino::GetSpecificShape(displayManager->GetHoldSlot(), 0, i - 4, j);
+							if (shape == 0)
+							{
+								std::cout << "  ";
+							}
+							else
+							{
+								std::cout << "¡á";
+							}
+						}
+					}
+					else
+					{
+						for (int j = 0; j < 4; j++)
+						{
+							std::cout << "x ";
+						}
+					}
+
+					for (int j = 0; j < 3; j++)
+					{
+						std::cout << ". ";
+					}
+				}
+				else
+				{
+					for (int j = 0; j < 10; j++)
+					{
+						std::cout << ". ";
+					}
+				}
+
+				//½ºÅ©¸°
 				for (int j = 0; j < displayManager->PLAY_AREA_WIDTH; j++)
 				{
 					if (displayManager->GetScreen(i, j) == 1)
@@ -36,14 +90,56 @@ void GameManager::StartGame(void)
 						std::cout << "  ";
 					}
 				}
-				for (int j = 0; j < 10; j++)
+
+				//Next
+				if (i <= 7)
+				{
+					for (int j = 0; j < 3; j++)
+					{
+						std::cout << ". ";
+					}
+
+					for (int j = 0; j < 4; j++)
+					{
+						int shape = Tetromino::GetSpecificShape(displayManager->GetNextSlot(), 0, i - 4, j);
+						if (shape == 0)
+						{
+							std::cout << "  ";
+						}
+						else
+						{
+							std::cout << "¡á";
+						}
+					}
+
+					for (int j = 0; j < 3; j++)
+					{
+						std::cout << ". ";
+					}
+					std::cout << "\n";
+				}
+				else
+				{
+					for (int j = 0; j < 10; j++)
+					{
+						std::cout << ". ";
+					}
+					std::cout << "\n";
+				}
+
+			}
+			for (int i = 0; i < 2; i++)
+			{
+				for (int j = 0; j < 30; j++)
 				{
 					std::cout << ". ";
 				}
 				std::cout << "\n";
 			}
+
 			displayManager->ClearCurrentTetromino();
 		}
+
 		eInputKey key = GetInputKey(true);
 		displayManager->InputValidGameKey(key);
 	}

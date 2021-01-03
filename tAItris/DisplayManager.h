@@ -9,8 +9,9 @@ private:
 							//2: 놓고 있는 블럭
 	bool bIsHoldSlotEmpty;
 	bool bIsRefreshNeeded;
+	bool bAlreadyCompletedSwapHold;
 	eTetromino holdSlot;
-	eTetromino nextSlot;
+	eTetromino nextTetromino;
 	const float TIME_TARGET;
 	clock_t t;
 public:
@@ -20,12 +21,15 @@ public:
 	DisplayManager();
 	int GetScreen(const int r, const int c) const;
 	eTetromino SwapHold(void);
+	eTetromino GetHoldSlot(void);
 	eTetromino GetNextSlot(void);
 	void SetNextSlot(void);
 	void ClearCurrentTetromino(void);
 	void DrawCurrentTertomino(void);
 	void FixCurrentTetromino(void);
+	void Hold();
 	void InputValidGameKey(eInputKey key);
+	bool CheckIsHoldSlotEmpty(void);
 	bool CheckIsRefreshNeeded(void);
 	bool CheckIsGameOver(void);
 };

@@ -213,12 +213,18 @@ eTetromino Tetromino::GetType(void) const
 	return type;
 }
 
-int Tetromino::GetShape(const int r, const int c)
+int Tetromino::GetShape(const int r, const int c) const
 {
 	assert(r >= 0 && r <= 3);
 	assert(c >= 0 && c <= 3);
 	return shape[r][c];
 }
+
+int Tetromino::GetSpecificShape(eTetromino t, const int rot, const int r, const int c)
+{
+	return tetrominoes[(int)t][rot][r][c];
+}
+
 
 void Tetromino::Rotate(const eRotate rot)
 {
