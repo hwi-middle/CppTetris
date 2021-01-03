@@ -2,7 +2,7 @@
 #include "myheader.h"
 #include "DisplayManager.h"
 
-DisplayManager::DisplayManager() :PLAY_AREA_HEIGHT(24), PLAY_AREA_WIDTH(10), bIsHoldSlotEmpty(true), bIsRefreshNeeded(true), TIME_TARGET(1.0f)
+DisplayManager::DisplayManager() :PLAY_AREA_HEIGHT(24), PLAY_AREA_WIDTH(10), bIsHoldSlotEmpty(true), bIsRefreshNeeded(true), TIME_TARGET(0.8f)
 {
 	t = clock();
 	for (int i = 0; i < PLAY_AREA_HEIGHT; i++)
@@ -10,12 +10,6 @@ DisplayManager::DisplayManager() :PLAY_AREA_HEIGHT(24), PLAY_AREA_WIDTH(10), bIs
 		memset(playArea[i], 0, sizeof(playArea[i]));
 	}
 
-	//std::cout << "테트로미노 선택\n";
-	//std::cout << "1.I\n2.J\n3.L\n4.O\n5.S\n6.Z\n7.T\n";
-	//int sel;
-	//std::cin >> sel;
-	//currentTetromino = new Tetromino((eTetromino)--sel);
-	//system("cls");
 	currentTetromino = new Tetromino(Tetromino::GetRandomTetromino());
 	nextTetromino = Tetromino::GetRandomTetromino();
 }
@@ -94,12 +88,12 @@ void DisplayManager::FixCurrentTetromino()
 	delete currentTetromino;
 	Tetromino* currentTetromino = new Tetromino(nextTetromino);
 	nextTetromino = Tetromino::GetRandomTetromino();
-	currentTetromino->SetCoordinate(0, 0);
+	currentTetromino->SetCoordinate(0, 3);
 }
 
 void DisplayManager::Hold()
 {
-	if(bAlreadyCompletedSwapHold) return;
+	if (bAlreadyCompletedSwapHold) return;
 
 	bAlreadyCompletedSwapHold = true;
 	bIsHoldSlotEmpty = false;
@@ -107,6 +101,34 @@ void DisplayManager::Hold()
 	holdSlot = currentTetromino->GetType();
 	delete currentTetromino;
 	Tetromino* currentTetromino = new Tetromino(temp);
+}
+
+bool DisplayManager::CheckCollideWithWall()
+{
+
+}
+
+bool DisplayManager::CheckCollideWithOtherTetromino()
+{
+	int x = 0;
+	int y = 0;
+	for (int i = currentTetromino->GetCoordinateX(); i < currentTetromino->GetCoordinateX() + 4; i++)
+	{
+		for (int j = currentTetromino->GetCoordinateY(); j < currentTetromino->GetCoordinateY() + 4; j++)
+		{
+			if (j > 0)
+			{
+				if (currentTetromino->GetShape(x, y) == 2 && playArea[i][j] == 1)
+				{
+					return true;
+				}
+			}
+			y++;
+		}
+		y = 0;
+		x++;
+	}
+	return false;
 }
 
 void DisplayManager::InputValidGameKey(eInputKey key)
@@ -119,24 +141,55 @@ void DisplayManager::InputValidGameKey(eInputKey key)
 	{
 	case eInputKey::ARROW_LEFT:
 		currentTetromino->SetCoordinate(currentTetromino->GetCoordinateX(), currentTetromino->GetCoordinateY() - 1);
+		if (CheckCollideWithOtherTetromino() == true)
+		{
+			currentTetromino->SetCoordinate(currentTetromino->GetCoordinateX(), currentTetromino->GetCoordinateY() + 1);
+			bIsRefreshNeeded = false;
+		}
 		break;
 	case eInputKey::ARROW_RIGHT:
 		currentTetromino->SetCoordinate(currentTetromino->GetCoordinateX(), currentTetromino->GetCoordinateY() + 1);
+		if (CheckCollideWithOtherTetromino() == true)
+		{
+			currentTetromino->SetCoordinate(currentTetromino->GetCoordinateX(), currentTetromino->GetCoordinateY() - 1);
+			bIsRefreshNeeded = false;
+		}
 		break;
 #ifdef _DEBUG
 	case eInputKey::ARROW_UP:
 		currentTetromino->SetCoordinate(currentTetromino->GetCoordinateX() - 1, currentTetromino->GetCoordinateY());
+		if (CheckCollideWithOtherTetromino() == true)
+		{
+			currentTetromino->SetCoordinate(currentTetromino->GetCoordinateX() + 1, currentTetromino->GetCoordinateY());
+			bIsRefreshNeeded = false;
+		}
 		break;
 #endif // _DEBUG
 	case eInputKey::ARROW_DOWN:
 	case eInputKey::TIME_PASSED:
 		currentTetromino->SetCoordinate(currentTetromino->GetCoordinateX() + 1, currentTetromino->GetCoordinateY());
+		if (CheckCollideWithOtherTetromino() == true)
+		{
+			currentTetromino->SetCoordinate(currentTetromino->GetCoordinateX() - 1, currentTetromino->GetCoordinateY());
+			FixCurrentTetromino();
+			//bIsRefreshNeeded = false;
+		}
 		break;
 	case eInputKey::Z:
 		currentTetromino->Rotate(eRotate::CLOCKWISE);
+		if (CheckCollideWithOtherTetromino() == true)
+		{
+			currentTetromino->Rotate(eRotate::COUNTERCLOCKWISE);
+			bIsRefreshNeeded = false;
+		}
 		break;
 	case eInputKey::X:
 		currentTetromino->Rotate(eRotate::COUNTERCLOCKWISE);
+		if (CheckCollideWithOtherTetromino() == true)
+		{
+			currentTetromino->Rotate(eRotate::CLOCKWISE);
+			bIsRefreshNeeded = false;
+		}
 		break;
 	case eInputKey::C:
 		Hold();

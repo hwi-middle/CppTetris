@@ -20,12 +20,6 @@ const int Tetromino::tetrominoes[7][4][4][4] =
 	//I미노
 	{
 		{
-			{0, 0, 0, 0},
-			{0, 0, 0, 0},
-			{2, 2, 2, 2},
-			{0, 0, 0, 0}
-		},
-		{
 			{0, 0, 2, 0},
 			{0, 0, 2, 0},
 			{0, 0, 2, 0},
@@ -42,6 +36,12 @@ const int Tetromino::tetrominoes[7][4][4][4] =
 			{0, 0, 2, 0},
 			{0, 0, 2, 0},
 			{0, 0, 2, 0}
+		},
+		{
+			{0, 0, 0, 0},
+			{0, 0, 0, 0},
+			{2, 2, 2, 2},
+			{0, 0, 0, 0}
 		}
 	},
 	//J미노
@@ -348,11 +348,11 @@ eTetromino Tetromino::GetRandomTetromino(void)
 	int randNum = dis(gen);
 	assert(randNum >= 0 && randNum <= 6);
 
-	if (randNum == 0) 
+	if (randNum == 0)
 	{
 		return eTetromino::I;
 	}
-	else if (randNum == 1) 
+	else if (randNum == 1)
 	{
 		return eTetromino::J;
 	}
@@ -360,19 +360,19 @@ eTetromino Tetromino::GetRandomTetromino(void)
 	{
 		return eTetromino::L;
 	}
-	else if (randNum == 3) 
+	else if (randNum == 3)
 	{
 		return eTetromino::O;
 	}
-	else if (randNum == 4) 
+	else if (randNum == 4)
 	{
 		return eTetromino::S;
 	}
-	else if (randNum == 5) 
+	else if (randNum == 5)
 	{
 		return eTetromino::Z;
 	}
-	else 
+	else
 	{
 		return eTetromino::T;
 	}
