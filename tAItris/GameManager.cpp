@@ -6,6 +6,26 @@
 void GameManager::StartGame(void)
 {
 	system("cls");
+	std::cout << "########  ########    ###    ########  ##    ##  #######  \n";
+	std::cout << "##     ## ##         ## ##   ##     ##  ##  ##  ##     ## \n";
+	std::cout << "##     ## ##        ##   ##  ##     ##   ####         ##  \n";
+	std::cout << "########  ######   ##     ## ##     ##    ##        ###   \n";
+	std::cout << "##   ##   ##       ######### ##     ##    ##       ##     \n";
+	std::cout << "##    ##  ##       ##     ## ##     ##    ##              \n";
+	std::cout << "##     ## ######## ##     ## ########     ##       ##   \n";
+	Sleep(1000);
+	system("cls");
+
+	std::cout << " ######  ########    ###    ########  ######## #### \n";
+	std::cout << "##    ##    ##      ## ##   ##     ##    ##    #### \n";
+	std::cout << "##          ##     ##   ##  ##     ##    ##    #### \n";
+	std::cout << " ######     ##    ##     ## ########     ##     ##  \n";
+	std::cout << "      ##    ##    ######### ##   ##      ##         \n";
+	std::cout << "##    ##    ##    ##     ## ##    ##     ##    #### \n";
+	std::cout << " ######     ##    ##     ## ##     ##    ##    #### \n";
+	Sleep(1000);
+	system("cls");
+
 	t = clock();
 	DisplayManager* displayManager = new DisplayManager();
 
@@ -164,12 +184,13 @@ void GameManager::StartGame(void)
 	std::cout << "##     ##  ##   ##  ##       ##   ##   \n";
 	std::cout << "##     ##   ## ##   ##       ##    ##  \n";
 	std::cout << " #######     ###    ######## ##     ## \n\n";
-	std::cout << "Score: " << displayManager->GetScore();
+	std::cout << "Score: " << displayManager->GetScore() << "\n";
 	std::cout << "Cleared: " << displayManager->GetClearedLine() << "line";
 	if (displayManager->GetClearedLine() > 1)
 	{
 		std::cout << "s";
 	}
+	std::cout << "\n\n";
 
 	delete displayManager;
 	system("pause");
@@ -178,15 +199,19 @@ void GameManager::StartGame(void)
 void GameManager::ShowHelp(void)
 {
 	system("cls");
-	std::cout << "How to Play\n\n";
+	std::cout << "가이드 1. 조작키\n\n";
 	std::cout << "←: 테트로미노를 왼쪽으로 이동시킵니다.\n";
 	std::cout << "→: 테트로미노를 오른쪽으로 이동시킵니다.\n";
-	std::cout << "↓: 테트로미노를 조금 더 빠르게 아래로 내립니다.(소프트 드롭)\n";
+	std::cout << "↓: 테트로미노를 더 빠르게 아래로 내립니다.(소프트 드롭)\n";
 	std::cout << "Space: 테트로미노를 즉시 최대한 아래로 내립니다.(하드 드롭)\n";
 	std::cout << "Z: 테트로미노를 좌로 90도 회전합니다.\n";
 	std::cout << "X: 테트로미노를 우로 90도 회전합니다.\n";
 	std::cout << "C: 테트로미노를 Hold합니다.\n\n";
+	system("pause");
 
+	system("cls");
+	std::cout << "가이드 2. 점수 합산\n\n";
+	std::cout << "각 라인 클리어마다 100점이 추가되고, 소프트 드롭마다 1점이 추가됩니다.\n\n";
 	system("pause");
 	system("cls");
 }
@@ -306,10 +331,6 @@ eInputKey GameManager::GetInputKey(bool bIsPlaying)
 			else if (input == 'c' || input == 'C')
 			{
 				return eInputKey::C;
-			}
-			else
-			{
-				return eInputKey::TIME_PASSED;
 			}
 		}
 	}
