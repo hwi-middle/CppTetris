@@ -13,7 +13,7 @@ private:
 	bool bIsRefreshNeeded;
 	bool bAlreadyCompletedSwapHold;
 	eTetromino holdSlot;
-	eTetromino nextTetromino;
+	eTetromino nextSlot;
 public:
 	const int PLAY_AREA_HEIGHT;
 	const int PLAY_AREA_WIDTH;

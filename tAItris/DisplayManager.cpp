@@ -10,7 +10,7 @@ DisplayManager::DisplayManager() : clearedLine(0), score(0), PLAY_AREA_HEIGHT(24
 	}
 
 	currentTetromino = new Tetromino(Tetromino::GetRandomTetromino());
-	nextTetromino = Tetromino::GetRandomTetromino();
+	nextSlot = Tetromino::GetRandomTetromino();
 }
 
 int DisplayManager::GetClearedLine(void) const
@@ -35,7 +35,7 @@ eTetromino DisplayManager::GetHoldSlot(void) const
 
 eTetromino DisplayManager::GetNextSlot(void) const
 {
-	return nextTetromino;
+	return nextSlot;
 }
 
 void DisplayManager::DrawCurrentTertomino()
@@ -102,21 +102,30 @@ void DisplayManager::FixCurrentTetromino()
 	}
 	ClearLine();
 	delete currentTetromino;
-	Tetromino* currentTetromino = new Tetromino(nextTetromino);
-	nextTetromino = Tetromino::GetRandomTetromino();
-	currentTetromino->SetCoordinate(0, 3);
+	Tetromino* currentTetromino = new Tetromino(nextSlot);
+	nextSlot = Tetromino::GetRandomTetromino();
 }
 
 void DisplayManager::Hold()
 {
 	if (bAlreadyCompletedSwapHold) return;
-
 	bAlreadyCompletedSwapHold = true;
-	bIsHoldSlotEmpty = false;
-	auto temp = holdSlot;
-	holdSlot = currentTetromino->GetType();
-	delete currentTetromino;
-	Tetromino* currentTetromino = new Tetromino(temp);
+
+	if (bIsHoldSlotEmpty)
+	{
+		holdSlot = currentTetromino->GetType();
+		delete currentTetromino;
+		Tetromino* currentTetromino = new Tetromino(nextSlot);
+		nextSlot = Tetromino::GetRandomTetromino();
+		bIsHoldSlotEmpty = false;
+	}
+	else
+	{
+		auto temp = holdSlot;
+		holdSlot = currentTetromino->GetType();
+		delete currentTetromino;
+		Tetromino* currentTetromino = new Tetromino(temp);
+	}
 }
 
 bool DisplayManager::CheckCollideWithWall()

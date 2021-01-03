@@ -6,6 +6,7 @@
 
 Tetromino::Tetromino(const eTetromino t) :type(t), currentRotateLevel(0)
 {
+	coordinate = { 0, 3 };	//초기좌표는 화면의 가운데로 설정하기 위해 0, 3으로 설정
 	for (int i = 0; i < 4; i++)
 	{
 		for (int j = 0; j < 4; j++)
