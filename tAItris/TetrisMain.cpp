@@ -18,8 +18,6 @@ int main(void)
 		case eTitleActions::HELP:
 			gameManager->ShowHelp();
 			break;
-		case eTitleActions::LEADERBOARD:
-			break;
 		case eTitleActions::EXIT:
 			delete gameManager;
 			return 0;

@@ -13,7 +13,7 @@ enum class eTitleActions	//타이틀 화면에서 선택할 수 있는 동작들
 {
 	START,
 	HELP,
-	LEADERBOARD,
+	//LEADERBOARD,
 	EXIT
 };
 

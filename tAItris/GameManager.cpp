@@ -220,14 +220,6 @@ eTitleActions GameManager::ShowTitle(void)
 {
 	system("cls");
 
-
-	std::vector<std::string> menu
-	{
-		"> 게임 시작",
-		"  도움말",
-		"  리더보드",
-		"  게임 종료"
-	};
 	int cursor = 0;
 
 	while (true)
@@ -240,31 +232,60 @@ eTitleActions GameManager::ShowTitle(void)
 		std::cout << "   ##    ##          ##    ##    ##   ##  ##    ## \n";
 		std::cout << "   ##    ########    ##    ##     ## ####  ######  \n\n";
 
-		std::cout << "※상하 방향키로 이동, Enter키로 선택\n";
+		std::cout << "※상하 방향키로 이동, Enter키로 선택\n\n";
 
-		for (auto& item : menu)
+		for (int i = 0; i < 3; i++)
 		{
-			std::cout << item << "\n";
+			if (cursor == i)
+			{
+				std::cout << ">>";
+			}
+			else
+			{
+				std::cout << "  ";
+			}
+
+			switch (i)
+			{
+			case 0:
+				std::cout << "  게 임 시 작  ";
+				break;
+			case 1:
+				std::cout << "  게임 가이드  ";
+				break;
+			case 2:
+				std::cout << "  게 임 종 료  ";
+				break;
+			default:
+				assert(false);
+				break;
+			}
+
+			if (cursor == i)
+			{
+				std::cout << "<<";
+			}
+			std::cout << "\n";
 		}
 
 		eInputKey key = GetInputKey(false);
 		switch (key)
 		{
 		case eInputKey::ARROW_UP:
-			menu[cursor--][0] = ' ';
+			cursor--;
 			if (cursor < 0) cursor = 0;
-			menu[cursor][0] = '>';
 			break;
 		case eInputKey::ARROW_DOWN:
-			menu[cursor++][0] = ' ';
-			if (cursor > 3) cursor = 3;
-			menu[cursor][0] = '>';
+			cursor++;
+			if (cursor > 2) cursor = 2;
 			break;
 		case eInputKey::ENTER:
 			if (cursor == 0) return eTitleActions::START;
-			if (cursor == 1) return eTitleActions::HELP;
-			if (cursor == 2) return eTitleActions::LEADERBOARD;
+			else if (cursor == 1) return eTitleActions::HELP;
 			else return eTitleActions::EXIT;
+			break;
+		default:
+			break;
 		}
 		system("cls");
 	}
