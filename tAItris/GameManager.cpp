@@ -14,8 +14,13 @@ void GameManager::StartGame(void)
 		if (displayManager->CheckIsRefreshNeeded())
 		{
 			system("cls");
-			std::cout << ". . . . . . . . . C L E A R E D : ";
+			std::cout << ". . . . . . . . . . . . . . . . . . . . . . . . . . . . . .\n";
+			std::cout << ". . . . . . . . . . . . . . . . . . . . . . . . . . . . . .\n";
+			std::cout << ". . . . . . . . . S  C  O  R  E : ";
 			std::cout << std::setfill('0') << std::setw(8) << displayManager->GetScore();
+			std::cout << ". . . . . . . . .\n";
+			std::cout << ". . . . . . . . . C L E A R E D : ";
+			std::cout << std::setfill('0') << std::setw(8) << displayManager->GetClearedLine();
 			std::cout << ". . . . . . . . .\n";
 
 			for (int i = 0; i < 2; i++)
@@ -143,9 +148,30 @@ void GameManager::StartGame(void)
 		eInputKey key = GetInputKey(true);
 		displayManager->InputValidGameKey(key);
 	}
-	delete displayManager;
 	system("cls");
-	std::cout << "GameOver";
+	std::cout << " ######      ###    ##     ## ######## \n";
+	std::cout << "##    ##    ## ##   ###   ### ##       \n";
+	std::cout << "##         ##   ##  #### #### ##       \n";
+	std::cout << "##   #### ##     ## ## ### ## ######   \n";
+	std::cout << "##    ##  ######### ##     ## ##       \n";
+	std::cout << "##    ##  ##     ## ##     ## ##       \n";
+	std::cout << " ######   ##     ## ##     ## ######## \n\n";
+
+	std::cout << " #######  ##     ## ######## ########  \n";
+	std::cout << "##     ## ##     ## ##       ##     ## \n";
+	std::cout << "##     ## ##     ## ##       ##     ## \n";
+	std::cout << "##     ## ##     ## ######   ########  \n";
+	std::cout << "##     ##  ##   ##  ##       ##   ##   \n";
+	std::cout << "##     ##   ## ##   ##       ##    ##  \n";
+	std::cout << " #######     ###    ######## ##     ## \n\n";
+	std::cout << "Score: " << displayManager->GetScore();
+	std::cout << "Cleared: " << displayManager->GetClearedLine() << "line";
+	if (displayManager->GetClearedLine() > 1)
+	{
+		std::cout << "s";
+	}
+
+	delete displayManager;
 	system("pause");
 }
 
@@ -168,6 +194,8 @@ void GameManager::ShowHelp(void)
 eTitleActions GameManager::ShowTitle(void)
 {
 	system("cls");
+
+
 	std::vector<std::string> menu
 	{
 		"> 게임 시작",
@@ -179,7 +207,14 @@ eTitleActions GameManager::ShowTitle(void)
 
 	while (true)
 	{
-		std::cout << "C++로 만든 tAItris입니다. 그런데 이제 AI는 없는...\n";
+		std::cout << "######## ######## ######## ########  ####  ######  \n";
+		std::cout << "   ##    ##          ##    ##     ##  ##  ##    ## \n";
+		std::cout << "   ##    ##          ##    ##     ##  ##  ##       \n";
+		std::cout << "   ##    ######      ##    ########   ##   ######  \n";
+		std::cout << "   ##    ##          ##    ##   ##    ##        ## \n";
+		std::cout << "   ##    ##          ##    ##    ##   ##  ##    ## \n";
+		std::cout << "   ##    ########    ##    ##     ## ####  ######  \n\n";
+
 		std::cout << "※상하 방향키로 이동, Enter키로 선택\n";
 
 		for (auto& item : menu)

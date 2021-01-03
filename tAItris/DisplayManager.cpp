@@ -2,7 +2,7 @@
 #include "myheader.h"
 #include "DisplayManager.h"
 
-DisplayManager::DisplayManager() : score(0), PLAY_AREA_HEIGHT(24), PLAY_AREA_WIDTH(10), bIsHoldSlotEmpty(true), bIsRefreshNeeded(true), TIME_TARGET(1.2f)
+DisplayManager::DisplayManager() : clearedLine(0), score(0), PLAY_AREA_HEIGHT(24), PLAY_AREA_WIDTH(10), bIsHoldSlotEmpty(true), bIsRefreshNeeded(true), TIME_TARGET(1.2f)
 {
 	t = clock();
 	for (int i = 0; i < PLAY_AREA_HEIGHT; i++)
@@ -12,6 +12,11 @@ DisplayManager::DisplayManager() : score(0), PLAY_AREA_HEIGHT(24), PLAY_AREA_WID
 
 	currentTetromino = new Tetromino(Tetromino::GetRandomTetromino());
 	nextTetromino = Tetromino::GetRandomTetromino();
+}
+
+int DisplayManager::GetClearedLine(void) const
+{
+	return clearedLine;
 }
 
 int DisplayManager::GetScore(void) const
@@ -211,7 +216,8 @@ void DisplayManager::ClearLine()
 					playArea[j][k] = playArea[j - 1][k];
 				}
 			}
-			score++;
+			clearedLine++;
+			score += 100;
 		}
 	}
 }
@@ -221,7 +227,6 @@ void DisplayManager::InputValidGameKey(eInputKey key)
 	std::pair<int, int> curCoordinate = { currentTetromino->GetCoordinateX(), currentTetromino->GetCoordinateY() };
 	int curRotateLevel = currentTetromino->GetRotateLevel();
 	bIsRefreshNeeded = true;
-
 	switch (key)
 	{
 	case eInputKey::ARROW_LEFT:
@@ -251,6 +256,7 @@ void DisplayManager::InputValidGameKey(eInputKey key)
 		break;
 #endif // _DEBUG
 	case eInputKey::ARROW_DOWN:
+		score++;
 	case eInputKey::TIME_PASSED:
 		currentTetromino->SetCoordinate(currentTetromino->GetCoordinateX() + 1, currentTetromino->GetCoordinateY());
 		if (CheckCollideWithFloor() == true || CheckCollideWithOtherTetromino() == true)
@@ -358,6 +364,7 @@ void DisplayManager::InputValidGameKey(eInputKey key)
 	case eInputKey::SPACE:
 		while (true)
 		{
+			score++;
 			currentTetromino->SetCoordinate(currentTetromino->GetCoordinateX() + 1, currentTetromino->GetCoordinateY());
 			if (CheckCollideWithFloor() == true || CheckCollideWithOtherTetromino() == true)
 			{
