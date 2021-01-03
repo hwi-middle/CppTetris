@@ -166,6 +166,10 @@ void GameManager::StartGame(void)
 		}
 
 		eInputKey key = GetInputKey(true);
+		if (key == eInputKey::ARROW_DOWN)
+		{
+			ResetTimer();
+		}
 		displayManager->InputValidGameKey(key);
 	}
 	system("cls");
@@ -298,7 +302,7 @@ void GameManager::ResetTimer(void)
 
 bool GameManager::CheckTimePassed(void)
 {
-	static const float TIME_TARGET = 1.2f;
+	static const float TIME_TARGET = 1.0f;
 	if ((clock() - (float)t) / CLOCKS_PER_SEC >= TIME_TARGET)
 	{
 		ResetTimer();
