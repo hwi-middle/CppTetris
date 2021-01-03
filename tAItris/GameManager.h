@@ -10,5 +10,6 @@ public:
 	void ShowHelp(void);
 	void StartGame(void);
 	bool CheckTimePassed(void);
+	void ResetTimer(void);
 	eInputKey GetInputKey(bool bIsPlaying);
 };

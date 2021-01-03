@@ -2,29 +2,14 @@
 #include "myheader.h"
 #include "DisplayManager.h"
 
-DisplayManager::DisplayManager() : clearedLine(0), score(0), PLAY_AREA_HEIGHT(24), PLAY_AREA_WIDTH(10), bIsHoldSlotEmpty(true), bIsRefreshNeeded(true), TIME_TARGET(1.2f)
+DisplayManager::DisplayManager() : clearedLine(0), score(0), PLAY_AREA_HEIGHT(24), PLAY_AREA_WIDTH(10), bIsHoldSlotEmpty(true), bIsRefreshNeeded(true)
 {
-#ifdef _DEBUG
-	std::cout << "테트로미노 선택\n";
-	std::cout << "1.I\n2.J\n3.L\n4.O\n5.S\n6.Z\n7.T\n";
-	int sel;
-	std::cin >> sel;
-	currentTetromino = new Tetromino((eTetromino)--sel);
-	system("cls");
-#else
-	currentTetromino = new Tetromino(Tetromino::GetRandomTetromino());
-	for (int i = 0; i < nextSlot.size(); i++)
-	{
-		nextSlot[i] = Tetromino::GetRandomTetromino();
-	}
-#endif // _DEBUG
-	t = clock();
 	for (int i = 0; i < PLAY_AREA_HEIGHT; i++)
 	{
 		memset(playArea[i], 0, sizeof(playArea[i]));
 	}
 
-	//currentTetromino = new Tetromino(Tetromino::GetRandomTetromino());
+	currentTetromino = new Tetromino(Tetromino::GetRandomTetromino());
 	nextTetromino = Tetromino::GetRandomTetromino();
 }
 

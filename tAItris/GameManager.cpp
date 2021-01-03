@@ -291,12 +291,17 @@ eTitleActions GameManager::ShowTitle(void)
 	}
 }
 
+void GameManager::ResetTimer(void)
+{
+	t = clock();
+}
+
 bool GameManager::CheckTimePassed(void)
 {
-	static const float TIME_TARGET = 0.8f;
+	static const float TIME_TARGET = 1.2f;
 	if ((clock() - (float)t) / CLOCKS_PER_SEC >= TIME_TARGET)
 	{
-		t = clock();
+		ResetTimer();
 		return true;
 	}
 	return false;

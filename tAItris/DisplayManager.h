@@ -14,8 +14,6 @@ private:
 	bool bAlreadyCompletedSwapHold;
 	eTetromino holdSlot;
 	eTetromino nextTetromino;
-	const float TIME_TARGET;
-	clock_t t;
 public:
 	const int PLAY_AREA_HEIGHT;
 	const int PLAY_AREA_WIDTH;
