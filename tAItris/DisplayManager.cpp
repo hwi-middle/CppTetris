@@ -2,7 +2,7 @@
 #include "myheader.h"
 #include "DisplayManager.h"
 
-DisplayManager::DisplayManager() : clearedLine(0), score(0), PLAY_AREA_HEIGHT(24), PLAY_AREA_WIDTH(10), bIsHoldSlotEmpty(true), bIsRefreshNeeded(true)
+DisplayManager::DisplayManager(void) : clearedLine(0), score(0), PLAY_AREA_HEIGHT(24), PLAY_AREA_WIDTH(10), bIsHoldSlotEmpty(true), bIsRefreshNeeded(true)
 {
 	for (int i = 0; i < PLAY_AREA_HEIGHT; i++)
 	{
@@ -38,7 +38,7 @@ eTetromino DisplayManager::GetNextSlot(void) const
 	return nextSlot;
 }
 
-void DisplayManager::DrawCurrentTertomino()
+void DisplayManager::DrawCurrentTertomino(void)
 {
 	int x = 0;
 	int y = 0;
@@ -60,7 +60,7 @@ void DisplayManager::DrawCurrentTertomino()
 	}
 }
 
-void DisplayManager::ClearCurrentTetromino()
+void DisplayManager::ClearCurrentTetromino(void)
 {
 	int x = 0;
 	int y = 0;
@@ -82,7 +82,7 @@ void DisplayManager::ClearCurrentTetromino()
 	}
 }
 
-void DisplayManager::FixCurrentTetromino()
+void DisplayManager::FixCurrentTetromino(void)
 {
 	bAlreadyCompletedSwapHold = false;
 	int x = 0;
@@ -106,7 +106,7 @@ void DisplayManager::FixCurrentTetromino()
 	nextSlot = Tetromino::GetRandomTetromino();
 }
 
-void DisplayManager::Hold()
+void DisplayManager::Hold(void)
 {
 	if (bAlreadyCompletedSwapHold) return;
 	bAlreadyCompletedSwapHold = true;
@@ -128,7 +128,7 @@ void DisplayManager::Hold()
 	}
 }
 
-bool DisplayManager::CheckCollideWithWall()
+bool DisplayManager::CheckCollideWithWall(void)
 {
 	int maxY = 7;
 	for (int i = 0; i < 4; i++)
@@ -161,7 +161,7 @@ bool DisplayManager::CheckCollideWithWall()
 	return false;
 }
 
-bool DisplayManager::CheckCollideWithFloor()
+bool DisplayManager::CheckCollideWithFloor(void)
 {
 	int maxX = 21;
 	for (int i = 0; i < 4; i++)
@@ -180,7 +180,7 @@ bool DisplayManager::CheckCollideWithFloor()
 	return false;
 }
 
-bool DisplayManager::CheckCollideWithOtherTetromino()
+bool DisplayManager::CheckCollideWithOtherTetromino(void)
 {
 	int x = 0;
 	int y = 0;
@@ -203,7 +203,7 @@ bool DisplayManager::CheckCollideWithOtherTetromino()
 	return false;
 }
 
-void DisplayManager::ClearLine()
+void DisplayManager::ClearLine(void)
 {
 	for (int i = 4; i < PLAY_AREA_HEIGHT; i++)
 	{
@@ -396,12 +396,12 @@ bool DisplayManager::CheckIsHoldSlotEmpty(void)
 	return bIsHoldSlotEmpty;
 }
 
-bool DisplayManager::CheckIsRefreshNeeded()
+bool DisplayManager::CheckIsRefreshNeeded(void)
 {
 	return bIsRefreshNeeded;
 }
 
-bool DisplayManager::CheckIsGameOver()
+bool DisplayManager::CheckIsGameOver(void)
 {
 	for (int i = 0; i < 4; i++)
 	{

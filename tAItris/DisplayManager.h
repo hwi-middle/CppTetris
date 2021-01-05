@@ -18,7 +18,7 @@ public:
 	const int PLAY_AREA_HEIGHT;
 	const int PLAY_AREA_WIDTH;
 
-	DisplayManager();
+	DisplayManager(void);
 	int GetClearedLine(void) const;
 	int GetScore(void) const;
 	int GetScreen(const int r, const int c) const;
@@ -27,11 +27,11 @@ public:
 	void ClearCurrentTetromino(void);
 	void DrawCurrentTertomino(void);
 	void FixCurrentTetromino(void);
-	void Hold();
-	bool CheckCollideWithWall();
-	bool CheckCollideWithFloor();
-	bool CheckCollideWithOtherTetromino();
-	void ClearLine();
+	void Hold(void);
+	bool CheckCollideWithWall(void);
+	bool CheckCollideWithFloor(void);
+	bool CheckCollideWithOtherTetromino(void);
+	void ClearLine(void);
 	void InputValidGameKey(eInputKey key);
 	bool CheckIsHoldSlotEmpty(void);
 	bool CheckIsRefreshNeeded(void);
