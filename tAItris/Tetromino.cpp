@@ -1,8 +1,8 @@
 #include "myheader.h"
 #include "Tetromino.h"
 
-#define X first;
-#define Y second;
+#define X first
+#define Y second
 
 Tetromino::Tetromino(const eTetromino t) :type(t), currentRotateLevel(0)
 {
@@ -256,6 +256,7 @@ void Tetromino::Rotate(const eRotate rot)
 		break;
 	}
 
+	assert(currentRotateLevel >= 0 && currentRotateLevel <= 3);
 	for (int i = 0; i < 4; i++)
 	{
 		for (int j = 0; j < 4; j++)
