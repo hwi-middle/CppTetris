@@ -2,6 +2,7 @@
 #include "DisplayManager.h"
 #include "myheader.h"
 #include "Tetromino.h"
+#define VERSION "1.0.0"
 
 void GameManager::StartGame(void)
 {
@@ -223,11 +224,12 @@ void GameManager::ShowHelp(void)
 eTitleActions GameManager::ShowTitle(void)
 {
 	system("cls");
-
+	
 	int cursor = 0;
 
 	while (true)
 	{
+		std::cout << "v" << VERSION << "\n\n";
 		std::cout << "######## ######## ######## ########  ####  ######  \n";
 		std::cout << "   ##    ##          ##    ##     ##  ##  ##    ## \n";
 		std::cout << "   ##    ##          ##    ##     ##  ##  ##       \n";
