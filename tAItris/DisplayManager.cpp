@@ -102,7 +102,7 @@ void DisplayManager::FixCurrentTetromino(void)
 	}
 	ClearLine();
 	delete currentTetromino;
-	Tetromino* currentTetromino = new Tetromino(nextSlot);
+	currentTetromino = new Tetromino(nextSlot);
 	nextSlot = Tetromino::GetRandomTetromino();
 }
 
@@ -115,7 +115,7 @@ void DisplayManager::Hold(void)
 	{
 		holdSlot = currentTetromino->GetType();
 		delete currentTetromino;
-		Tetromino* currentTetromino = new Tetromino(nextSlot);
+		currentTetromino = new Tetromino(nextSlot);
 		nextSlot = Tetromino::GetRandomTetromino();
 		bIsHoldSlotEmpty = false;
 	}
@@ -124,7 +124,7 @@ void DisplayManager::Hold(void)
 		auto temp = holdSlot;
 		holdSlot = currentTetromino->GetType();
 		delete currentTetromino;
-		Tetromino* currentTetromino = new Tetromino(temp);
+		currentTetromino = new Tetromino(temp);
 	}
 }
 
