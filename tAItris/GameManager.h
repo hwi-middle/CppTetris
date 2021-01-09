@@ -9,7 +9,7 @@ public:
 	eTitleActions ShowTitle(void);
 	void ShowHelp(void);
 	void StartGame(void);
-	bool CheckTimePassed(void);
+	bool CheckTimePassed(float bonusTime);
 	void ResetTimer(void);
-	eInputKey GetInputKey(bool bIsPlaying);
+	eInputKey GetInputKey(bool bIsPlaying, float bonusTime);
 };

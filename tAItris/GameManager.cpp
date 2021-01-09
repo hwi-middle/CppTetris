@@ -166,7 +166,7 @@ void GameManager::StartGame(void)
 			displayManager->ClearCurrentTetromino();
 		}
 
-		eInputKey key = GetInputKey(true);
+		eInputKey key = GetInputKey(true, 0.0f);
 		if (key == eInputKey::ARROW_DOWN)
 		{
 			ResetTimer();
@@ -274,7 +274,7 @@ eTitleActions GameManager::ShowTitle(void)
 			std::cout << "\n";
 		}
 
-		eInputKey key = GetInputKey(false);
+		eInputKey key = GetInputKey(false, 0.0f);
 		switch (key)
 		{
 		case eInputKey::ARROW_UP:
@@ -302,9 +302,9 @@ void GameManager::ResetTimer(void)
 	t = clock();
 }
 
-bool GameManager::CheckTimePassed(void)
+bool GameManager::CheckTimePassed(float bonusTime)
 {
-	static const float TIME_TARGET = 1.0f;
+	static const float TIME_TARGET = 1.0f + bonusTime;
 	if ((clock() - (float)t) / CLOCKS_PER_SEC >= TIME_TARGET)
 	{
 		ResetTimer();
@@ -313,11 +313,11 @@ bool GameManager::CheckTimePassed(void)
 	return false;
 }
 
-eInputKey GameManager::GetInputKey(bool bIsPlaying)
+eInputKey GameManager::GetInputKey(bool bIsPlaying, float bonusTime)
 {
 	while (true)
 	{
-		if (bIsPlaying && CheckTimePassed())
+		if (bIsPlaying && CheckTimePassed(bonusTime))
 		{
 			return eInputKey::TIME_PASSED;
 		}
