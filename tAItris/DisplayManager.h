@@ -28,6 +28,7 @@ public:
 	void DrawCurrentTertomino(void);
 	void FixCurrentTetromino(void);
 	void Hold(void);
+	eCollisionDirection GetSideCollisionDirection(void);
 	bool CheckCollideWithWall(void);
 	bool CheckCollideWithFloor(void);
 	bool CheckCollideWithOtherTetromino(void);

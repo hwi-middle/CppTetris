@@ -47,3 +47,11 @@ enum class eRotate	//테트로미노의 회전 방향
 	CLOCKWISE,
 	COUNTERCLOCKWISE
 };
+
+enum class eCollisionDirection	//테트로미노가 충돌했을 때 충돌이 일어난 방향
+{
+	LEFT,
+	RIGHT,
+	BOTH,
+	NOT_COLLIDED
+};

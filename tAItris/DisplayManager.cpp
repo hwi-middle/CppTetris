@@ -128,6 +128,87 @@ void DisplayManager::Hold(void)
 	}
 }
 
+eCollisionDirection DisplayManager::GetSideCollisionDirection(void)
+{
+	bool bIsCollidedLeft = false;
+	bool bIsCollidedRight = false;
+
+	//벽과 충돌 체크
+	int maxY = 7;
+	for (int i = 0; i < 4; i++)
+	{
+		if (currentTetromino->GetShape(i, 3) != 0)
+		{
+			maxY = 6;
+		}
+	}
+
+	int minY = -3;
+	int leftIdx = 3;
+	for (int i = 0; i < 4; i++)
+	{
+		for (int j = 0; j < 3; j++)
+		{
+			if (currentTetromino->GetShape(i, j) != 0)
+			{
+				leftIdx = std::min(leftIdx, j);
+			}
+		}
+	}
+	minY += 3 - leftIdx;
+
+	if (currentTetromino->GetCoordinateY() < minY)
+	{
+		bIsCollidedLeft = true;
+	}
+
+	if (currentTetromino->GetCoordinateY() > maxY)
+	{
+		bIsCollidedRight = false;
+	}
+
+	//다른 테트로미노와 충돌 체크
+	int x = 0;
+	int y = 0;
+	for (int i = currentTetromino->GetCoordinateX(); i < currentTetromino->GetCoordinateX() + 4; i++)
+	{
+		for (int j = currentTetromino->GetCoordinateY(); j < currentTetromino->GetCoordinateY() + 4; j++)
+		{
+			if (j >= 0 && (currentTetromino->GetShape(x, y) == 2 && playArea[i][j] == 1))
+			{
+				if (y < 2)
+				{
+					bIsCollidedLeft = true;
+				}
+				else
+				{
+					bIsCollidedRight = true;
+				}
+			}
+			y++;
+		}
+		y = 0;
+		x++;
+	}
+
+	if (bIsCollidedLeft && bIsCollidedRight)
+	{
+		return eCollisionDirection::BOTH;
+	}
+
+	if (bIsCollidedLeft)
+	{
+		return eCollisionDirection::LEFT;
+	}
+
+	if (bIsCollidedRight)
+	{
+		return eCollisionDirection::RIGHT;
+	}
+
+	return eCollisionDirection::NOT_COLLIDED;
+}
+
 bool DisplayManager::CheckCollideWithWall(void)
 {
 	int maxY = 7;
@@ -235,6 +316,7 @@ void DisplayManager::InputValidGameKey(eInputKey key)
 	std::pair<int, int> curCoordinate = { currentTetromino->GetCoordinateX(), currentTetromino->GetCoordinateY() };
 	int curRotateLevel = currentTetromino->GetRotateLevel();
 	bIsRefreshNeeded = true;
+	bool bRotateClockwise = false;
 	switch (key)
 	{
 	case eInputKey::ARROW_LEFT:
@@ -274,32 +356,46 @@ void DisplayManager::InputValidGameKey(eInputKey key)
 		}
 		break;
 	case eInputKey::Z:
-		currentTetromino->Rotate(eRotate::CLOCKWISE);
-		//회전 후 충돌 시 좌우로 옮겨보고 그래도 안되면 회전 막음
-		if (CheckCollideWithWall() == true || CheckCollideWithOtherTetromino() == true)
+		bRotateClockwise = true;
+		//intentional fallthrough
+	case eInputKey::X:
+	{
+		int originalCoordinateX = currentTetromino->GetCoordinateX();
+		int originalCoordinateY = currentTetromino->GetCoordinateY();
+		bool bSuccess = false;
+		if (bRotateClockwise)
 		{
-			int originalCoordinateX = currentTetromino->GetCoordinateX();
-			int originalCoordinateY = currentTetromino->GetCoordinateY();
+			currentTetromino->Rotate(eRotate::CLOCKWISE);
+		}
+		else
+		{
+			currentTetromino->Rotate(eRotate::COUNTERCLOCKWISE);
+		}
 
-			bool bSuccess = false;
-			//오른쪽으로 옮겨보기
+		//회전 후 충돌 체크 및 충돌 방향 검출
+		eCollisionDirection colDir;
+		colDir = GetSideCollisionDirection();
+		switch (colDir)
+		{
+		case eCollisionDirection::NOT_COLLIDED:	//충돌하지 않았다면 문제없이 회전처리
+			bSuccess = true;
+			break;
+		case eCollisionDirection::BOTH:	//양쪽에서 충돌 시 무조건 실패
+			bSuccess = false;
+			break;
+		case eCollisionDirection::LEFT:	//좌측에서 충돌 시 우측으로 옮겨보기
 			for (int i = 1; i <= 3; i++)
 			{
 				currentTetromino->SetCoordinate(currentTetromino->GetCoordinateX(), currentTetromino->GetCoordinateY() + 1);
 				if (CheckCollideWithWall() == false && CheckCollideWithOtherTetromino() == false)
 				{
 					bSuccess = true;
-					//std::cout << i; exit(0);
 					break;
 				}
 			}
-			if (bSuccess)
-			{
-				break;
-			}
-
-			//왼쪽으로 옮겨보기
-			currentTetromino->SetCoordinate(originalCoordinateX, originalCoordinateY);
+			break;
+		case eCollisionDirection::RIGHT:	//우측에서 충돌 시 좌측으로 옮겨보기
+			//currentTetromino->SetCoordinate(originalCoordinateX, originalCoordinateY);
 			for (int i = 1; i <= 3; i++)
 			{
 				currentTetromino->SetCoordinate(currentTetromino->GetCoordinateX(), currentTetromino->GetCoordinateY() - 1);
@@ -309,63 +405,26 @@ void DisplayManager::InputValidGameKey(eInputKey key)
 					break;
 				}
 			}
-			if (bSuccess)
-			{
-				break;
-			}
-
-			//좌우 모두 실패, 회전 복구
-			currentTetromino->SetCoordinate(originalCoordinateX, originalCoordinateY);
-			currentTetromino->Rotate(eRotate::COUNTERCLOCKWISE);
-			bIsRefreshNeeded = false;
+			break;
+		default:
+			assert(false);
+			break;
 		}
-		break;
-	case eInputKey::X:
-		currentTetromino->Rotate(eRotate::COUNTERCLOCKWISE);
-		//회전 후 충돌 시 좌우로 옮겨보고 그래도 안되면 회전 막음
-		if (CheckCollideWithWall() == true || CheckCollideWithOtherTetromino() == true)
+		//실패시 회전 복구
+		if (!bSuccess)
 		{
-			int originalCoordinateX = currentTetromino->GetCoordinateX();
-			int originalCoordinateY = currentTetromino->GetCoordinateY();
-
-			bool bSuccess = false;
-			//오른쪽으로 옮겨보기
-			for (int i = 1; i <= 3; i++)
-			{
-				currentTetromino->SetCoordinate(currentTetromino->GetCoordinateX(), currentTetromino->GetCoordinateY() + i);
-				if (CheckCollideWithWall() == false && CheckCollideWithOtherTetromino() == false)
-				{
-					bSuccess = true;
-					break;
-				}
-			}
-			if (bSuccess)
-			{
-				break;
-			}
-
-			//왼쪽으로 옮겨보기
 			currentTetromino->SetCoordinate(originalCoordinateX, originalCoordinateY);
-			for (int i = 1; i <= 3; i++)
+			if (bRotateClockwise)
 			{
-				currentTetromino->SetCoordinate(currentTetromino->GetCoordinateX(), currentTetromino->GetCoordinateY() - i);
-				if (CheckCollideWithWall() == false && CheckCollideWithOtherTetromino() == false)
-				{
-					bSuccess = true;
-					break;
-				}
+				currentTetromino->Rotate(eRotate::COUNTERCLOCKWISE);
 			}
-			if (bSuccess)
+			else
 			{
-				break;
-			}
-
-			//좌우 모두 실패, 회전 복구
-			currentTetromino->SetCoordinate(originalCoordinateX, originalCoordinateY);
-			currentTetromino->Rotate(eRotate::CLOCKWISE);
-			bIsRefreshNeeded = false;
+				currentTetromino->Rotate(eRotate::CLOCKWISE);
+			}			bIsRefreshNeeded = false;
 		}
 		break;
+	}
 	case eInputKey::C:
 		Hold();
 		break;
