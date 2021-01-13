@@ -164,7 +164,7 @@ eCollisionDirection DisplayManager::GetSideCollisionDirection(void)
 
 	if (currentTetromino->GetCoordinateY() > maxY)
 	{
-		bIsCollidedRight = false;
+		bIsCollidedRight = true;
 	}
 
 	//다른 테트로미노와 충돌 체크
@@ -209,39 +209,6 @@ eCollisionDirection DisplayManager::GetSideCollisionDirection(void)
 	return eCollisionDirection::NOT_COLLIDED;
 }
 
-bool DisplayManager::CheckCollideWithWall(void)
-{
-	int maxY = 7;
-	for (int i = 0; i < 4; i++)
-	{
-		if (currentTetromino->GetShape(i, 3) != 0)
-		{
-			maxY = 6;
-		}
-	}
-
-	int minY = -3;
-	int leftIdx = 3;
-	for (int i = 0; i < 4; i++)
-	{
-		for (int j = 0; j < 3; j++)
-		{
-			if (currentTetromino->GetShape(i, j) != 0)
-			{
-				leftIdx = std::min(leftIdx, j);
-			}
-		}
-	}
-	minY += 3 - leftIdx;
-
-	if (currentTetromino->GetCoordinateY() > maxY || currentTetromino->GetCoordinateY() < minY)
-	{
-		return true;
-	}
-
-	return false;
-}
-
 bool DisplayManager::CheckCollideWithFloor(void)
 {
 	int maxX = 21;
@@ -257,29 +224,6 @@ bool DisplayManager::CheckCollideWithFloor(void)
 	if (currentTetromino->GetCoordinateX() > maxX)
 	{
 		return true;
-	}
-	return false;
-}
-
-bool DisplayManager::CheckCollideWithOtherTetromino(void)
-{
-	int x = 0;
-	int y = 0;
-	for (int i = currentTetromino->GetCoordinateX(); i < currentTetromino->GetCoordinateX() + 4; i++)
-	{
-		for (int j = currentTetromino->GetCoordinateY(); j < currentTetromino->GetCoordinateY() + 4; j++)
-		{
-			if (j >= 0)
-			{
-				if (currentTetromino->GetShape(x, y) == 2 && playArea[i][j] == 1)
-				{
-					return true;
-				}
-			}
-			y++;
-		}
-		y = 0;
-		x++;
 	}
 	return false;
 }
@@ -321,7 +265,7 @@ void DisplayManager::InputValidGameKey(eInputKey key)
 	{
 	case eInputKey::ARROW_LEFT:
 		currentTetromino->SetCoordinate(currentTetromino->GetCoordinateX(), currentTetromino->GetCoordinateY() - 1);
-		if (CheckCollideWithWall() == true || CheckCollideWithOtherTetromino() == true)
+		if (GetSideCollisionDirection() != eCollisionDirection::NOT_COLLIDED)
 		{
 			currentTetromino->SetCoordinate(currentTetromino->GetCoordinateX(), currentTetromino->GetCoordinateY() + 1);
 			bIsRefreshNeeded = false;
@@ -329,7 +273,7 @@ void DisplayManager::InputValidGameKey(eInputKey key)
 		break;
 	case eInputKey::ARROW_RIGHT:
 		currentTetromino->SetCoordinate(currentTetromino->GetCoordinateX(), currentTetromino->GetCoordinateY() + 1);
-		if (CheckCollideWithWall() == true || CheckCollideWithOtherTetromino() == true)
+		if (GetSideCollisionDirection() != eCollisionDirection::NOT_COLLIDED)
 		{
 			currentTetromino->SetCoordinate(currentTetromino->GetCoordinateX(), currentTetromino->GetCoordinateY() - 1);
 			bIsRefreshNeeded = false;
@@ -338,7 +282,7 @@ void DisplayManager::InputValidGameKey(eInputKey key)
 #ifdef _DEBUG
 	case eInputKey::ARROW_UP:
 		currentTetromino->SetCoordinate(currentTetromino->GetCoordinateX() - 1, currentTetromino->GetCoordinateY());
-		if (CheckCollideWithOtherTetromino() == true)
+		if (GetSideCollisionDirection() != eCollisionDirection::NOT_COLLIDED)
 		{
 			currentTetromino->SetCoordinate(currentTetromino->GetCoordinateX() + 1, currentTetromino->GetCoordinateY());
 			bIsRefreshNeeded = false;
@@ -349,7 +293,7 @@ void DisplayManager::InputValidGameKey(eInputKey key)
 		score++;
 	case eInputKey::TIME_PASSED:
 		currentTetromino->SetCoordinate(currentTetromino->GetCoordinateX() + 1, currentTetromino->GetCoordinateY());
-		if (CheckCollideWithFloor() == true || CheckCollideWithOtherTetromino() == true)
+		if (CheckCollideWithFloor() == true || GetSideCollisionDirection() != eCollisionDirection::NOT_COLLIDED)
 		{
 			currentTetromino->SetCoordinate(currentTetromino->GetCoordinateX() - 1, currentTetromino->GetCoordinateY());
 			FixCurrentTetromino();
@@ -387,7 +331,7 @@ void DisplayManager::InputValidGameKey(eInputKey key)
 			for (int i = 1; i <= 3; i++)
 			{
 				currentTetromino->SetCoordinate(currentTetromino->GetCoordinateX(), currentTetromino->GetCoordinateY() + 1);
-				if (CheckCollideWithWall() == false && CheckCollideWithOtherTetromino() == false)
+				if (GetSideCollisionDirection() == eCollisionDirection::NOT_COLLIDED)
 				{
 					bSuccess = true;
 					break;
@@ -399,7 +343,7 @@ void DisplayManager::InputValidGameKey(eInputKey key)
 			for (int i = 1; i <= 3; i++)
 			{
 				currentTetromino->SetCoordinate(currentTetromino->GetCoordinateX(), currentTetromino->GetCoordinateY() - 1);
-				if (CheckCollideWithWall() == false && CheckCollideWithOtherTetromino() == false)
+				if (GetSideCollisionDirection() == eCollisionDirection::NOT_COLLIDED)
 				{
 					bSuccess = true;
 					break;
@@ -433,7 +377,7 @@ void DisplayManager::InputValidGameKey(eInputKey key)
 		{
 			score++;
 			currentTetromino->SetCoordinate(currentTetromino->GetCoordinateX() + 1, currentTetromino->GetCoordinateY());
-			if (CheckCollideWithFloor() == true || CheckCollideWithOtherTetromino() == true)
+			if (CheckCollideWithFloor() == true || GetSideCollisionDirection() != eCollisionDirection::NOT_COLLIDED)
 			{
 				currentTetromino->SetCoordinate(currentTetromino->GetCoordinateX() - 1, currentTetromino->GetCoordinateY());
 				FixCurrentTetromino();

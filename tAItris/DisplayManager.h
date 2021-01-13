@@ -29,9 +29,7 @@ public:
 	void FixCurrentTetromino(void);
 	void Hold(void);
 	eCollisionDirection GetSideCollisionDirection(void);
-	bool CheckCollideWithWall(void);
 	bool CheckCollideWithFloor(void);
-	bool CheckCollideWithOtherTetromino(void);
 	void ClearLine(void);
 	void InputValidGameKey(eInputKey key);
 	bool CheckIsHoldSlotEmpty(void);
