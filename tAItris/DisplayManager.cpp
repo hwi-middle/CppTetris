@@ -134,28 +134,33 @@ eCollisionDirection DisplayManager::GetSideCollisionDirection(void)
 	bool bIsCollidedRight = false;
 
 	//벽과 충돌 체크
-	int maxY = 7;
-	for (int i = 0; i < 4; i++)
+	int maxY = 6;
+	for (int col = 3; col >= 0; col--)
 	{
-		if (currentTetromino->GetShape(i, 3) != 0)
+		for (int row = 0; row < 4; row++)
 		{
-			maxY = 6;
-		}
-	}
-
-	int minY = -3;
-	int leftIdx = 3;
-	for (int i = 0; i < 4; i++)
-	{
-		for (int j = 0; j < 3; j++)
-		{
-			if (currentTetromino->GetShape(i, j) != 0)
+			if (currentTetromino->GetShape(row, col) != 0)
 			{
-				leftIdx = std::min(leftIdx, j);
+				goto quit_calculating_max_y;
 			}
 		}
+		maxY++;
 	}
-	minY += 3 - leftIdx;
+quit_calculating_max_y:
+
+	int minY = 0;
+	for (int col = 0; col < 4; col++)
+	{
+		for (int row = 0; row < 4; row++)
+		{
+			if (currentTetromino->GetShape(row, col) != 0)
+			{
+				goto quit_calculating_min_y;
+			}
+		}
+		minY--;
+	}
+quit_calculating_min_y:
 
 	if (currentTetromino->GetCoordinateY() < minY)
 	{
@@ -211,15 +216,19 @@ eCollisionDirection DisplayManager::GetSideCollisionDirection(void)
 
 bool DisplayManager::CheckCollideWithFloor(void)
 {
-	int maxX = 21;
-	for (int i = 0; i < 4; i++)
+	int maxX = 20;
+	for (int row = 3; row >= 0; row--)
 	{
-		if (currentTetromino->GetShape(3, i) != 0)
+		for (int col = 0; col < 4; col++)
 		{
-			maxX--;
-			break;
+			if (currentTetromino->GetShape(row, col) != 0)
+			{
+				goto quit_calculating_max_x;
+			}
 		}
+		maxX++;
 	}
+quit_calculating_max_x:
 
 	if (currentTetromino->GetCoordinateX() > maxX)
 	{
@@ -299,10 +308,10 @@ void DisplayManager::InputValidGameKey(eInputKey key)
 			FixCurrentTetromino();
 		}
 		break;
-	case eInputKey::Z:
+	case eInputKey::X:
 		bRotateClockwise = true;
 		//intentional fallthrough
-	case eInputKey::X:
+	case eInputKey::Z:
 	{
 		int originalCoordinateX = currentTetromino->GetCoordinateX();
 		int originalCoordinateY = currentTetromino->GetCoordinateY();

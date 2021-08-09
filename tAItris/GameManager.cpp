@@ -2,7 +2,7 @@
 #include "DisplayManager.h"
 #include "myheader.h"
 #include "Tetromino.h"
-#define VERSION "1.0.0"
+#define VERSION "1.0.1"
 
 void GameManager::StartGame(void)
 {
@@ -209,8 +209,8 @@ void GameManager::ShowHelp(void)
 	std::cout << "→: 테트로미노를 오른쪽으로 이동시킵니다.\n";
 	std::cout << "↓: 테트로미노를 더 빠르게 아래로 내립니다.(소프트 드롭)\n";
 	std::cout << "Space: 테트로미노를 즉시 최대한 아래로 내립니다.(하드 드롭)\n";
-	std::cout << "Z: 테트로미노를 좌로 90도 회전합니다.\n";
-	std::cout << "X: 테트로미노를 우로 90도 회전합니다.\n";
+	std::cout << "Z: 테트로미노를 좌(반시계 방향)로 90도 회전합니다.\n";
+	std::cout << "X: 테트로미노를 우(시계 방향)로 90도 회전합니다.\n";
 	std::cout << "C: 테트로미노를 Hold합니다.\n\n";
 	system("pause");
 
