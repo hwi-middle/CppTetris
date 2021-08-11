@@ -212,6 +212,8 @@ const int Tetromino::tetrominoes[7][4][4][4] =
 	},
 };
 
+bool Tetromino::bag[7] = { 0, };
+
 eTetromino Tetromino::GetType(void) const
 {
 	return type;
@@ -299,6 +301,20 @@ eTetromino Tetromino::GetRandomTetromino(void)
 	std::uniform_int_distribution<int> dis(0, 6);	//±ÕµîºÐÆ÷(Uniform Distribution)
 
 	int randNum = dis(gen);
+	if (CheckIsBagFull() == true)
+	{
+		for (int i = 0; i < 7; i++)
+		{
+			bag[i] = false;
+		}
+	}
+
+	do
+	{
+		randNum = dis(gen);
+	} while (bag[randNum] != false);
+	bag[randNum] = true;
+
 	assert(randNum >= 0 && randNum <= 6);
 
 	if (randNum == 0)
@@ -329,4 +345,16 @@ eTetromino Tetromino::GetRandomTetromino(void)
 	{
 		return eTetromino::T;
 	}
+}
+
+bool Tetromino::CheckIsBagFull(void)
+{
+	for (int i = 0; i < 7; i++)
+	{
+		if (bag[i] == false)
+		{
+			return false;
+		}
+	}
+	return true;
 }
